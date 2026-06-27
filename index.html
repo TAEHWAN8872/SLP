@@ -20,6 +20,18 @@
     header h1 span { color: var(--accent-light); }
     header p { color: var(--muted); margin-top: 6px; font-size: 0.92rem; }
 
+    /* 월 선택기 */
+    .month-bar { max-width: 980px; margin: 0 auto 12px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .month-nav { display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: 9px; padding: 6px 10px; }
+    .month-nav-btn { background: none; border: none; font-size: 1rem; cursor: pointer; color: var(--muted); padding: 0 4px; line-height: 1; transition: color 0.15s; }
+    .month-nav-btn:hover { color: var(--accent-light); }
+    .month-nav-label { font-size: 0.95rem; font-weight: 700; color: var(--text); min-width: 90px; text-align: center; }
+    .month-saved-list { display: flex; gap: 6px; flex-wrap: wrap; }
+    .month-chip { font-size: 0.78rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+    .month-chip:hover { border-color: var(--accent-light); color: var(--accent-light); }
+    .month-chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .month-chip.has-data { border-color: rgba(108,99,255,0.4); color: var(--accent-light); background: rgba(108,99,255,0.07); }
+
     /* 툴바 */
     .toolbar { max-width: 980px; margin: 0 auto 14px; display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
     .btn-tool { display: flex; align-items: center; gap: 6px; font-family: inherit; font-size: 0.84rem; font-weight: 600; padding: 8px 16px; border-radius: 7px; cursor: pointer; border: 1px solid var(--border); transition: all 0.15s; }
@@ -270,6 +282,16 @@
   <p>단가를 설정하고 직원별 플타 여부와 교육 날짜를 입력하세요</p>
 </header>
 
+<!-- 월 선택기 -->
+<div class="month-bar">
+  <div class="month-nav">
+    <button class="month-nav-btn" onclick="changeMonth(-1)">‹</button>
+    <div class="month-nav-label" id="monthLabel"></div>
+    <button class="month-nav-btn" onclick="changeMonth(1)">›</button>
+  </div>
+  <div class="month-saved-list" id="monthChips"></div>
+</div>
+
 <!-- 툴바 -->
 <div class="toolbar">
   <button class="btn-tool save"  onclick="saveData()">💾 저장</button>
@@ -368,20 +390,70 @@
 </div>
 
 <script>
-  const STORAGE_KEY = 'slp_salary_v1';
+  const STORAGE_PREFIX = 'slp_salary_';
   let rateBasic = 0, rateOT = 0;
   let rows = [], idCounter = 0;
 
-  // ── 초기 로드 ──
-  (function init() {
-    const saved = localStorage.getItem(STORAGE_KEY);
+  // 현재 선택된 연/월
+  const _now = new Date();
+  let curYear  = _now.getFullYear();
+  let curMonth = _now.getMonth() + 1; // 1-indexed
+
+  function monthKey(y, m) { return `${STORAGE_PREFIX}${y}_${String(m).padStart(2,'0')}`; }
+  function curKey()        { return monthKey(curYear, curMonth); }
+  function monthLabel(y, m){ return `${y}년 ${m}월`; }
+
+  // ── 월 선택기 렌더 ──
+  function renderMonthBar() {
+    document.getElementById('monthLabel').textContent = monthLabel(curYear, curMonth);
+    // 저장된 월 목록 수집
+    const chips = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith(STORAGE_PREFIX)) {
+        const part = k.replace(STORAGE_PREFIX,''); // e.g. "2026_06"
+        const [y, m] = part.split('_').map(Number);
+        if (y && m) chips.push({y, m, key: k});
+      }
+    }
+    chips.sort((a,b)=> a.y!==b.y ? a.y-b.y : a.m-b.m);
+    const container = document.getElementById('monthChips');
+    container.innerHTML = '';
+    chips.forEach(({y, m, key}) => {
+      const isActive = y===curYear && m===curMonth;
+      const btn = document.createElement('button');
+      btn.className = 'month-chip has-data' + (isActive ? ' active' : '');
+      btn.textContent = monthLabel(y, m);
+      btn.onclick = () => switchMonth(y, m);
+      container.appendChild(btn);
+    });
+  }
+
+  function changeMonth(dir) {
+    curMonth += dir;
+    if (curMonth > 12) { curMonth = 1; curYear++; }
+    if (curMonth < 1)  { curMonth = 12; curYear--; }
+    loadMonth();
+  }
+
+  function switchMonth(y, m) {
+    curYear = y; curMonth = m;
+    loadMonth();
+  }
+
+  // ── 월 데이터 로드 ──
+  function loadMonth() {
+    rows = []; idCounter = 0;
+    document.getElementById('tableBody').innerHTML = '';
+    document.getElementById('mobileList').innerHTML = '';
+    const saved = localStorage.getItem(curKey());
     if (saved) {
       try {
         const data = JSON.parse(saved);
         rateBasic = data.rateBasic || 0;
         rateOT    = data.rateOT    || 0;
-        if (rateBasic) document.getElementById('rateBasic').value = rateBasic;
-        if (rateOT)    document.getElementById('rateOT').value    = rateOT;
+        document.getElementById('rateBasic').value = rateBasic || '';
+        document.getElementById('rateOT').value    = rateOT    || '';
         if (data.rows && data.rows.length > 0) {
           data.rows.forEach(r => {
             const id = idCounter++;
@@ -390,20 +462,31 @@
             updateTrigger(id);
           });
           checkMobileBtn();
+          renderMonthBar();
+          calcTotal();
           return;
         }
       } catch(e) {}
     }
+    // 저장 데이터 없으면 단가 초기화 후 빈 행 1개
+    rateBasic = 0; rateOT = 0;
+    document.getElementById('rateBasic').value = '';
+    document.getElementById('rateOT').value    = '';
     addRow();
-  })();
+    renderMonthBar();
+  }
+
+  // ── 초기 로드 ──
+  (function init() { loadMonth(); })();
 
   // ── 저장 ──
   function saveData() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+    localStorage.setItem(curKey(), JSON.stringify({
       rateBasic, rateOT,
       rows: rows.map(r => ({ name: r.name, overtime: r.overtime, eduDates: r.eduDates }))
     }));
-    showToast('✅ 저장되었습니다');
+    renderMonthBar();
+    showToast(`✅ ${monthLabel(curYear,curMonth)} 저장 완료`);
   }
 
   // ── 초기화 ──
@@ -411,28 +494,26 @@
   function closeResetModal() { document.getElementById('resetModal').classList.remove('show'); }
   function confirmReset() {
     closeResetModal();
-    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(curKey());
     rows = []; idCounter = 0; rateBasic = 0; rateOT = 0;
     document.getElementById('rateBasic').value = '';
     document.getElementById('rateOT').value = '';
     document.getElementById('tableBody').innerHTML = '';
     document.getElementById('mobileList').innerHTML = '';
     addRow();
+    renderMonthBar();
     showToast('🗑 초기화되었습니다');
   }
 
   // ── 엑셀 내보내기 ──
   function exportExcel() {
-    const now = new Date();
-    const ym  = `${now.getFullYear()}년 ${now.getMonth()+1}월`;
-    // 이름 있는 행만 필터링
+    const ym = monthLabel(curYear, curMonth);
     const validRows = rows.filter(r => r.name && r.name.trim() !== '');
     let csv = '\uFEFF';
     csv += `월급 계산서 (${ym})\n\n기본 단가,${rateBasic}원\n플타 단가,${rateOT}원\n\n`;
     csv += `이름,플타,교육날짜,교육횟수,적용단가,최종금액\n`;
     validRows.forEach(r => {
       const count = countEdu(r.eduDates), rate = r.overtime ? rateOT : rateBasic;
-      // 교육날짜를 쌍따옴표로 감싸서 쉼표가 있어도 한 셀에 표시
       const datesCell = r.eduDates ? `"${r.eduDates}"` : '–';
       csv += `${r.name},${r.overtime?'플타':'기본'},${datesCell},${count}회,${rate}원,${count*rate}원\n`;
     });
@@ -441,7 +522,7 @@
     csv += `\n합계,,,${eduAll}회,,${totalAll}원\n`;
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
-    a.download = `월급계산서_${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}.csv`;
+    a.download = `월급계산서_${curYear}${String(curMonth).padStart(2,'0')}.csv`;
     a.click();
     showToast('📊 엑셀 파일로 내보냈습니다');
   }

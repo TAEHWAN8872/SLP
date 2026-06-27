@@ -72,13 +72,24 @@
     .input-name::placeholder { color: var(--muted); }
 
     /* 플타 토글 */
-    .toggle { display: inline-flex; align-items: center; gap: 0; cursor: pointer; user-select: none; }
+    .toggle { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
     .toggle input[type="checkbox"] { display: none; }
-    .toggle-pill { width: 40px; height: 22px; background: var(--border); border-radius: 999px; position: relative; transition: background 0.2s; flex-shrink: 0; }
-    .toggle-pill::after { content: ''; position: absolute; width: 16px; height: 16px; background: #fff; border-radius: 50%; top: 3px; left: 3px; transition: transform 0.2s; }
+    .toggle-pill {
+      width: 44px; height: 26px; background: var(--border);
+      border-radius: 999px; position: relative; transition: background 0.2s; flex-shrink: 0;
+    }
+    .toggle-pill::after {
+      content: ''; position: absolute; width: 20px; height: 20px;
+      background: #fff; border-radius: 50%; top: 3px; left: 3px;
+      transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
     .toggle input:checked + .toggle-pill { background: var(--accent); }
     .toggle input:checked + .toggle-pill::after { transform: translateX(18px); }
-    .toggle-label { display: none; } /* 라벨 숨김 – pill 색으로 상태 표현 */
+    .toggle-label {
+      font-size: 0.82rem; font-weight: 700; color: var(--muted);
+      min-width: 28px; transition: color 0.2s;
+    }
+    .toggle input:checked ~ .toggle-label { color: var(--accent-light); }
 
     /* 교육날짜 셀 – 클릭 트리거 영역 */
     .edu-cell { display: flex; align-items: center; justify-content: center; gap: 8px; }
@@ -230,6 +241,21 @@
     .mobile-edu-input:focus { border-color: var(--yellow); }
     .mobile-edu-input::placeholder { color: var(--muted); font-size: 0.82rem; }
     .mobile-field.full { grid-column: 1 / -1; }
+    /* 플타 + 단가 한 줄 레이아웃 */
+    .mobile-plta-row {
+      grid-column: 1 / -1;
+      display: flex; align-items: center; gap: 10px;
+      background: var(--surface2); border-radius: 8px; padding: 10px 12px;
+    }
+    .mobile-plta-label {
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; color: var(--muted); white-space: nowrap;
+    }
+    .mobile-plta-sep { flex: 1; }
+    .mobile-plta-rate-label {
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; color: var(--muted); white-space: nowrap;
+    }
     .mobile-result { font-size: 1.05rem; font-weight: 700; color: var(--muted); }
     .mobile-result.has-value { color: var(--green); }
     .mobile-result.ot-value  { color: var(--accent-light); }
@@ -520,16 +546,15 @@
         <button class="btn-del" onclick="removeRow(${id})">✕</button>
       </div>
       <div class="mobile-card-body">
-        <div class="mobile-field">
-          <label>플타</label>
+        <div class="mobile-field mobile-plta-row">
+          <div class="mobile-plta-label">플타</div>
           <label class="toggle">
             <input type="checkbox" id="mot-${id}" ${row.overtime?'checked':''} onchange="updateField(${id},'overtime',this.checked)" />
             <span class="toggle-pill"></span>
             <span class="toggle-label" id="motlabel-${id}">${row.overtime?'ON':'OFF'}</span>
           </label>
-        </div>
-        <div class="mobile-field">
-          <label>적용 단가</label>
+          <div class="mobile-plta-sep"></div>
+          <div class="mobile-plta-rate-label">적용 단가</div>
           <div class="mobile-rate ${rateClass}" id="mrate-${id}">${rate?'₩'+fmt(rate)+'/회':'–'}</div>
         </div>
         <div class="mobile-field" style="grid-column:1/-1">

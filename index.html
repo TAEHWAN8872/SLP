@@ -21,71 +21,57 @@
     header p { color: var(--muted); margin-top: 6px; font-size: 0.92rem; }
 
     /* 툴바 */
-    .toolbar {
-      max-width: 980px; margin: 0 auto 14px;
-      display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap;
-    }
-    .btn-tool {
-      display: flex; align-items: center; gap: 6px;
-      font-family: inherit; font-size: 0.84rem; font-weight: 600;
-      padding: 8px 16px; border-radius: 7px; cursor: pointer;
-      border: 1px solid var(--border); transition: all 0.15s;
-    }
-    .btn-tool.save   { background: rgba(108,99,255,0.12); color: var(--accent-light); border-color: rgba(108,99,255,0.35); }
-    .btn-tool.save:hover { background: rgba(108,99,255,0.22); }
-    .btn-tool.excel  { background: rgba(62,207,142,0.12); color: var(--green); border-color: rgba(62,207,142,0.35); }
-    .btn-tool.excel:hover { background: rgba(62,207,142,0.22); }
-    .btn-tool.reset  { background: rgba(255,107,107,0.08); color: var(--danger); border-color: rgba(255,107,107,0.3); }
-    .btn-tool.reset:hover { background: rgba(255,107,107,0.18); }
+    .toolbar { max-width: 980px; margin: 0 auto 14px; display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+    .btn-tool { display: flex; align-items: center; gap: 6px; font-family: inherit; font-size: 0.84rem; font-weight: 600; padding: 8px 16px; border-radius: 7px; cursor: pointer; border: 1px solid var(--border); transition: all 0.15s; }
+    .btn-tool.save  { background: rgba(108,99,255,0.10); color: var(--accent-light); border-color: rgba(108,99,255,0.3); }
+    .btn-tool.save:hover { background: rgba(108,99,255,0.2); }
+    .btn-tool.excel { background: rgba(23,158,104,0.10); color: var(--green); border-color: rgba(23,158,104,0.3); }
+    .btn-tool.excel:hover { background: rgba(23,158,104,0.2); }
+    .btn-tool.reset { background: rgba(224,62,62,0.07); color: var(--danger); border-color: rgba(224,62,62,0.25); }
+    .btn-tool.reset:hover { background: rgba(224,62,62,0.15); }
 
-    /* 저장 상태 알림 */
-    .save-toast {
-      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
-      background: var(--surface2); border: 1px solid var(--border);
-      color: var(--text); font-size: 0.88rem; padding: 10px 20px;
-      border-radius: 30px; opacity: 0; transition: opacity 0.3s, transform 0.3s;
-      pointer-events: none; white-space: nowrap; z-index: 999;
-    }
+    /* 토스트 */
+    .save-toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px); background: #1e2133; border: 1px solid #333; color: #fff; font-size: 0.88rem; padding: 10px 20px; border-radius: 30px; opacity: 0; transition: opacity 0.3s, transform 0.3s; pointer-events: none; white-space: nowrap; z-index: 999; }
     .save-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
     /* 단가 패널 */
-    .rate-panel {
-      max-width: 980px; margin: 0 auto 16px;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 18px 24px;
-      display: flex; align-items: center; gap: 32px; flex-wrap: wrap;
-    }
+    .rate-panel { max-width: 980px; margin: 0 auto 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 24px; display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
     .rate-panel .panel-title { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; white-space: nowrap; }
     .rate-group { display: flex; align-items: center; gap: 10px; }
     .rate-label { font-size: 0.88rem; color: var(--muted); white-space: nowrap; }
     .rate-badge { display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; margin-right: 4px; vertical-align: middle; }
-    .rate-badge.basic { background: rgba(62,207,142,0.15); color: var(--green); }
-    .rate-badge.ot    { background: rgba(139,133,255,0.15); color: var(--accent-light); }
-    .rate-input-wrap {
-      display: flex; align-items: center; gap: 4px;
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 7px; padding: 6px 12px; transition: border-color 0.2s;
-    }
+    .rate-badge.basic { background: rgba(23,158,104,0.12); color: var(--green); }
+    .rate-badge.ot    { background: rgba(90,82,224,0.12); color: var(--accent-light); }
+    .rate-input-wrap { display: flex; align-items: center; gap: 4px; background: var(--surface2); border: 1px solid var(--border); border-radius: 7px; padding: 6px 12px; transition: border-color 0.2s; }
     .rate-input-wrap:focus-within { border-color: var(--accent-light); }
     .rate-input-wrap span { color: var(--muted); font-size: 0.85rem; }
     .rate-input { background: transparent; border: none; color: var(--text); font-family: inherit; font-size: 0.95rem; font-weight: 600; width: 110px; text-align: right; outline: none; }
     .rate-input::placeholder { color: var(--muted); font-weight: 400; }
     .rate-unit { font-size: 0.78rem; color: var(--muted); margin-left: 2px; }
 
-    /* 카드/테이블 */
+    /* ════════════════════════════
+       PC 테이블
+    ════════════════════════════ */
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; max-width: 980px; margin: 0 auto; }
     table { width: 100%; border-collapse: collapse; }
-    thead th { background: var(--surface2); padding: 12px 14px; font-size: 0.77rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    thead th {
+      background: var(--surface2); padding: 12px 14px;
+      font-size: 0.77rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.06em; color: var(--muted);
+      text-align: center;           /* ← 헤더 가운데 정렬 */
+      border-bottom: 1px solid var(--border); white-space: nowrap;
+    }
     tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
     tbody tr:last-child { border-bottom: none; }
-    tbody tr:hover { background: rgba(108,99,255,0.04); }
-    td { padding: 11px 14px; vertical-align: middle; }
+    tbody tr:hover { background: rgba(108,99,255,0.03); }
+    td { padding: 11px 14px; vertical-align: middle; text-align: center; } /* ← 셀 가운데 */
 
-    .input-name { background: transparent; border: none; border-bottom: 1px solid var(--border); color: var(--text); font-family: inherit; font-size: 0.95rem; padding: 4px 0; width: 100%; outline: none; transition: border-color 0.2s; }
+    /* 이름 */
+    .input-name { background: transparent; border: none; border-bottom: 1px solid var(--border); color: var(--text); font-family: inherit; font-size: 0.95rem; padding: 4px 0; width: 100%; outline: none; transition: border-color 0.2s; text-align: center; }
     .input-name:focus { border-color: var(--accent-light); }
     .input-name::placeholder { color: var(--muted); }
 
-    td.center { text-align: center; }
+    /* 플타 토글 */
     .toggle { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
     .toggle input[type="checkbox"] { display: none; }
     .toggle-pill { width: 40px; height: 22px; background: var(--border); border-radius: 999px; position: relative; transition: background 0.2s; flex-shrink: 0; }
@@ -95,39 +81,44 @@
     .toggle-label { font-size: 0.78rem; color: var(--muted); min-width: 26px; }
     .toggle input:checked ~ .toggle-label { color: var(--accent-light); font-weight: 600; }
 
-    .edu-cell { display: flex; align-items: center; gap: 8px; }
-    .input-edu { background: transparent; border: none; border-bottom: 1px solid var(--border); color: var(--text); font-family: inherit; font-size: 0.93rem; padding: 4px 0; width: 200px; outline: none; transition: border-color 0.2s; }
+    /* 교육 날짜 */
+    .edu-cell { display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .input-edu { background: transparent; border: none; border-bottom: 1px solid var(--border); color: var(--text); font-family: inherit; font-size: 0.93rem; padding: 4px 0; width: 180px; outline: none; transition: border-color 0.2s; text-align: center; }
     .input-edu:focus { border-color: var(--yellow); }
-    .input-edu::placeholder { color: var(--muted); }
-    .edu-count-badge { background: rgba(245,200,66,0.12); color: var(--yellow); font-size: 0.78rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; white-space: nowrap; min-width: 36px; text-align: center; }
-    .edu-count-badge.empty { background: transparent; color: transparent; }
+    .input-edu::placeholder { color: var(--muted); font-size: 0.82rem; }
+    .edu-count-badge { background: rgba(179,138,0,0.1); color: var(--yellow); font-size: 0.78rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; white-space: nowrap; min-width: 36px; text-align: center; }
+    .edu-count-badge.empty { visibility: hidden; }
 
-    .applied-rate { font-size: 0.82rem; white-space: nowrap; text-align: right; }
+    /* 적용 단가 */
+    .applied-rate { font-size: 0.85rem; white-space: nowrap; text-align: center; font-weight: 600; }
     .applied-rate.basic { color: var(--green); }
     .applied-rate.ot    { color: var(--accent-light); }
     .applied-rate.none  { color: var(--muted); }
 
-    .result-cell { text-align: right; font-weight: 700; font-size: 0.98rem; color: var(--text); white-space: nowrap; }
+    /* 최종 금액 */
+    .result-cell { font-weight: 700; font-size: 0.98rem; color: var(--muted); white-space: nowrap; text-align: center; }
     .result-cell.has-value { color: var(--green); }
     .result-cell.ot-value  { color: var(--accent-light); }
 
+    /* 삭제 */
     .btn-del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; padding: 2px 6px; border-radius: 4px; transition: color 0.15s, background 0.15s; }
-    .btn-del:hover { color: var(--danger); background: rgba(255,107,107,0.1); }
+    .btn-del:hover { color: var(--danger); background: rgba(224,62,62,0.08); }
 
+    /* 행 추가 */
     .add-row-wrap { padding: 13px 14px; border-top: 1px solid var(--border); }
     .btn-add { background: none; border: 1px dashed var(--border); color: var(--muted); cursor: pointer; font-family: inherit; font-size: 0.88rem; padding: 7px 14px; border-radius: 6px; transition: all 0.15s; display: flex; align-items: center; gap: 6px; }
-    .btn-add:hover { border-color: var(--accent); color: var(--accent-light); background: rgba(108,99,255,0.06); }
+    .btn-add:hover { border-color: var(--accent); color: var(--accent-light); background: rgba(108,99,255,0.05); }
 
     /* 합계 */
-    .summary { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); max-width: 980px; margin: 16px auto 0; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .summary { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); max-width: 980px; margin: 16px auto 0; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
     .summary-left .label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; }
     .summary-left .sub { font-size: 0.88rem; color: var(--muted); margin-top: 4px; }
     .summary-left .sub span { color: var(--text); font-weight: 600; }
     .total-amount { font-size: 2rem; font-weight: 700; color: var(--green); letter-spacing: -1px; }
     .total-amount sup { font-size: 1rem; font-weight: 600; margin-right: 3px; vertical-align: super; }
 
-    /* 확인 모달 */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; }
+    /* 모달 */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000; align-items: center; justify-content: center; }
     .modal-overlay.show { display: flex; }
     .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px 32px; max-width: 340px; width: 90%; text-align: center; }
     .modal h3 { font-size: 1.1rem; margin-bottom: 10px; }
@@ -136,16 +127,54 @@
     .modal-btns button { flex: 1; padding: 10px; border-radius: 8px; font-family: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border); transition: all 0.15s; }
     .modal-btns .btn-cancel { background: var(--surface2); color: var(--muted); }
     .modal-btns .btn-cancel:hover { color: var(--text); }
-    .modal-btns .btn-confirm { background: rgba(255,107,107,0.15); color: var(--danger); border-color: rgba(255,107,107,0.3); }
-    .modal-btns .btn-confirm:hover { background: rgba(255,107,107,0.28); }
+    .modal-btns .btn-confirm { background: rgba(224,62,62,0.1); color: var(--danger); border-color: rgba(224,62,62,0.25); }
+    .modal-btns .btn-confirm:hover { background: rgba(224,62,62,0.2); }
 
-    @media (max-width: 700px) {
+    /* ════════════════════════════
+       모바일: 카드형 레이아웃
+    ════════════════════════════ */
+    .mobile-list { display: none; max-width: 980px; margin: 0 auto; }
+    .mobile-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 16px; margin-bottom: 10px;
+    }
+    .mobile-card-top {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;
+    }
+    .mobile-name-input {
+      background: transparent; border: none; border-bottom: 1px solid var(--border);
+      color: var(--text); font-family: inherit; font-size: 1rem; font-weight: 600;
+      padding: 4px 0; outline: none; flex: 1; margin-right: 12px; transition: border-color 0.2s;
+    }
+    .mobile-name-input:focus { border-color: var(--accent-light); }
+    .mobile-name-input::placeholder { color: var(--muted); font-weight: 400; }
+    .mobile-card-body { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; }
+    .mobile-field label { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; margin-bottom: 5px; }
+    .mobile-edu-wrap { display: flex; align-items: center; gap: 6px; }
+    .mobile-edu-input {
+      background: transparent; border: none; border-bottom: 1px solid var(--border);
+      color: var(--text); font-family: inherit; font-size: 0.93rem;
+      padding: 4px 0; flex: 1; outline: none; transition: border-color 0.2s;
+    }
+    .mobile-edu-input:focus { border-color: var(--yellow); }
+    .mobile-edu-input::placeholder { color: var(--muted); font-size: 0.82rem; }
+    .mobile-result { font-size: 1.05rem; font-weight: 700; color: var(--muted); }
+    .mobile-result.has-value { color: var(--green); }
+    .mobile-result.ot-value  { color: var(--accent-light); }
+    .mobile-rate { font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+    .mobile-rate.basic { color: var(--green); }
+    .mobile-rate.ot    { color: var(--accent-light); }
+    .mobile-add-btn { width: 100%; background: none; border: 1px dashed var(--border); color: var(--muted); cursor: pointer; font-family: inherit; font-size: 0.88rem; padding: 12px; border-radius: var(--radius); transition: all 0.15s; margin-top: 4px; }
+    .mobile-add-btn:hover { border-color: var(--accent); color: var(--accent-light); }
+
+    @media (max-width: 680px) {
+      body { padding: 24px 12px 80px; }
       header h1 { font-size: 1.5rem; }
-      td { padding: 8px 8px; }
-      .input-edu { width: 130px; }
-      .rate-panel { gap: 16px; padding: 14px 16px; }
+      .card { display: none; }           /* PC 테이블 숨김 */
+      .mobile-list { display: block; }   /* 모바일 카드 표시 */
+      .rate-panel { gap: 14px; padding: 14px 16px; flex-direction: column; align-items: flex-start; }
       .toolbar { justify-content: stretch; }
-      .btn-tool { flex: 1; justify-content: center; }
+      .btn-tool { flex: 1; justify-content: center; font-size: 0.8rem; padding: 8px 10px; }
     }
   </style>
 </head>
@@ -153,7 +182,7 @@
 
 <header>
   <h1>💰 월급 <span>계산기</span></h1>
-  <p>상단에 단가를 설정하고, 직원별로 플타 여부와 교육 날짜를 입력하세요</p>
+  <p>단가를 설정하고 직원별 플타 여부와 교육 날짜를 입력하세요</p>
 </header>
 
 <!-- 툴바 -->
@@ -184,16 +213,16 @@
   </div>
 </div>
 
-<!-- 테이블 -->
+<!-- PC 테이블 -->
 <div class="card">
   <table>
     <thead>
       <tr>
         <th style="width:16%">이름</th>
-        <th style="width:10%; text-align:center">플타</th>
-        <th style="width:40%">교육 날짜 <span style="font-weight:400;opacity:.6">(쉼표로 구분 · 예: 1, 4, 7)</span></th>
-        <th style="width:14%; text-align:right">적용 단가</th>
-        <th style="width:15%; text-align:right">최종 금액</th>
+        <th style="width:10%">플타</th>
+        <th style="width:38%">교육 날짜 <span style="font-weight:400;opacity:.5;font-size:0.72rem">(쉼표 구분 · 예: 1, 4, 7)</span></th>
+        <th style="width:16%">적용 단가</th>
+        <th style="width:15%">최종 금액</th>
         <th style="width:5%"></th>
       </tr>
     </thead>
@@ -204,6 +233,10 @@
   </div>
 </div>
 
+<!-- 모바일 카드 리스트 -->
+<div class="mobile-list" id="mobileList"></div>
+<button class="mobile-add-btn" id="mobileAddBtn" style="display:none;max-width:980px;margin:0 auto;" onclick="addRow()">＋ 직원 추가</button>
+
 <!-- 합계 -->
 <div class="summary">
   <div class="summary-left">
@@ -213,10 +246,8 @@
   <div class="total-amount"><sup>₩</sup><span id="totalDisplay">0</span></div>
 </div>
 
-<!-- 토스트 -->
 <div class="save-toast" id="toast"></div>
 
-<!-- 초기화 확인 모달 -->
 <div class="modal-overlay" id="resetModal">
   <div class="modal">
     <h3>⚠️ 초기화 확인</h3>
@@ -241,29 +272,28 @@
         const data = JSON.parse(saved);
         rateBasic = data.rateBasic || 0;
         rateOT    = data.rateOT    || 0;
-        document.getElementById('rateBasic').value = rateBasic || '';
-        document.getElementById('rateOT').value    = rateOT    || '';
+        if (rateBasic) document.getElementById('rateBasic').value = rateBasic;
+        if (rateOT)    document.getElementById('rateOT').value    = rateOT;
         if (data.rows && data.rows.length > 0) {
           data.rows.forEach(r => {
             const id = idCounter++;
-            rows.push({ id, name: r.name || '', overtime: !!r.overtime, eduDates: r.eduDates || '' });
+            rows.push({ id, name: r.name||'', overtime: !!r.overtime, eduDates: r.eduDates||'' });
             appendRowDOM(id);
           });
+          checkMobileBtn();
           return;
         }
       } catch(e) {}
     }
-    // 저장 데이터 없으면 빈 3행
     addRow(); addRow(); addRow();
   })();
 
   // ── 저장 ──
   function saveData() {
-    const data = {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
       rateBasic, rateOT,
       rows: rows.map(r => ({ name: r.name, overtime: r.overtime, eduDates: r.eduDates }))
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }));
     showToast('✅ 저장되었습니다');
   }
 
@@ -273,43 +303,33 @@
   function confirmReset() {
     closeResetModal();
     localStorage.removeItem(STORAGE_KEY);
-    rows = []; idCounter = 0;
-    rateBasic = 0; rateOT = 0;
+    rows = []; idCounter = 0; rateBasic = 0; rateOT = 0;
     document.getElementById('rateBasic').value = '';
     document.getElementById('rateOT').value = '';
     document.getElementById('tableBody').innerHTML = '';
+    document.getElementById('mobileList').innerHTML = '';
     addRow(); addRow(); addRow();
     showToast('🗑 초기화되었습니다');
   }
 
-  // ── 엑셀 내보내기 (CSV → .xlsx 대신 탭 구분 .xls) ──
+  // ── 엑셀 내보내기 ──
   function exportExcel() {
     const now = new Date();
     const ym  = `${now.getFullYear()}년 ${now.getMonth()+1}월`;
-    let csv = '\uFEFF'; // BOM (한글 깨짐 방지)
-    csv += `월급 계산서 (${ym})\n\n`;
-    csv += `기본 단가,${rateBasic}원\n`;
-    csv += `플타 단가,${rateOT}원\n\n`;
+    let csv = '\uFEFF';
+    csv += `월급 계산서 (${ym})\n\n기본 단가,${rateBasic}원\n플타 단가,${rateOT}원\n\n`;
     csv += `이름,플타,교육날짜,교육횟수,적용단가,최종금액\n`;
-
     rows.forEach(r => {
-      const count = countEdu(r.eduDates);
-      const rate  = r.overtime ? rateOT : rateBasic;
-      const total = count * rate;
-      csv += `${r.name},${r.overtime ? '플타' : '기본'},${r.eduDates},${count}회,${rate}원,${total}원\n`;
+      const count = countEdu(r.eduDates), rate = r.overtime ? rateOT : rateBasic;
+      csv += `${r.name},${r.overtime?'플타':'기본'},${r.eduDates},${count}회,${rate}원,${count*rate}원\n`;
     });
-
-    const totalAll  = rows.reduce((s, r) => s + calcRow(r), 0);
-    const eduAll    = rows.reduce((s, r) => s + countEdu(r.eduDates), 0);
-    csv += `\n합계,,,${ eduAll }회,,${totalAll}원\n`;
-
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement('a');
-    a.href     = url;
+    const totalAll = rows.reduce((s,r)=>s+calcRow(r),0);
+    const eduAll   = rows.reduce((s,r)=>s+countEdu(r.eduDates),0);
+    csv += `\n합계,,,${eduAll}회,,${totalAll}원\n`;
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
     a.download = `월급계산서_${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}.csv`;
     a.click();
-    URL.revokeObjectURL(url);
     showToast('📊 엑셀 파일로 내보냈습니다');
   }
 
@@ -317,140 +337,198 @@
   let toastTimer;
   function showToast(msg) {
     const el = document.getElementById('toast');
-    el.textContent = msg;
-    el.classList.add('show');
+    el.textContent = msg; el.classList.add('show');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
   }
 
   // ── 단가 입력 ──
   function onRateInput(type, val) {
-    const num = parseInt(val.replace(/[^0-9]/g, '') || '0', 10) || 0;
-    if (type === 'basic') rateBasic = num;
-    else rateOT = num;
+    const num = parseInt(val.replace(/[^0-9]/g,''),10)||0;
+    if (type==='basic') rateBasic=num; else rateOT=num;
     refreshAllResults();
   }
 
   // ── 행 추가 ──
   function addRow() {
     const id = idCounter++;
-    rows.push({ id, name: '', overtime: false, eduDates: '' });
+    rows.push({ id, name:'', overtime:false, eduDates:'' });
     appendRowDOM(id);
-    setTimeout(() => { const el = document.getElementById('name-' + id); if (el) el.focus(); }, 30);
+    setTimeout(()=>{ const el=document.getElementById('name-'+id); if(el)el.focus(); },30);
   }
 
   function appendRowDOM(id) {
+    // PC 테이블
     const tbody = document.getElementById('tableBody');
     const tr = document.createElement('tr');
-    tr.id = 'row-' + id;
+    tr.id = 'row-'+id;
     tr.innerHTML = buildRowHTML(id);
     tbody.appendChild(tr);
+    // 모바일 카드
+    const ml = document.getElementById('mobileList');
+    const mc = document.createElement('div');
+    mc.id = 'mcard-'+id;
+    mc.className = 'mobile-card';
+    mc.innerHTML = buildMobileCardHTML(id);
+    ml.appendChild(mc);
+    checkMobileBtn();
     calcTotal();
   }
 
+  function checkMobileBtn() {
+    document.getElementById('mobileAddBtn').style.display = window.innerWidth <= 680 ? 'block' : 'none';
+  }
+  window.addEventListener('resize', checkMobileBtn);
+
+  // ── PC 행 HTML ──
   function buildRowHTML(id) {
-    const row = rows.find(r => r.id === id);
+    const row = rows.find(r=>r.id===id);
     const count = countEdu(row.eduDates);
     const rate  = row.overtime ? rateOT : rateBasic;
     const total = calcRow(row);
     const rateClass   = !rate ? 'none' : row.overtime ? 'ot' : 'basic';
-    const resultClass = total > 0 ? (row.overtime ? 'ot-value' : 'has-value') : '';
+    const resultClass = total>0 ? (row.overtime?'ot-value':'has-value') : '';
     return `
       <td><input class="input-name" id="name-${id}" type="text" placeholder="이름" value="${esc(row.name)}" oninput="updateField(${id},'name',this.value)" /></td>
-      <td class="center">
+      <td>
         <label class="toggle">
-          <input type="checkbox" id="ot-${id}" ${row.overtime ? 'checked' : ''} onchange="updateField(${id},'overtime',this.checked)" />
+          <input type="checkbox" id="ot-${id}" ${row.overtime?'checked':''} onchange="updateField(${id},'overtime',this.checked)" />
           <span class="toggle-pill"></span>
-          <span class="toggle-label" id="otlabel-${id}">${row.overtime ? 'ON' : 'OFF'}</span>
+          <span class="toggle-label" id="otlabel-${id}">${row.overtime?'ON':'OFF'}</span>
         </label>
       </td>
       <td>
         <div class="edu-cell">
-          <input class="input-edu" id="edu-${id}" type="text" placeholder="예) 1, 4, 7" value="${esc(row.eduDates)}" oninput="updateEdu(${id}, this.value)" />
-          <span class="edu-count-badge ${count > 0 ? '' : 'empty'}" id="badge-${id}">${count > 0 ? count+'회' : '0회'}</span>
+          <input class="input-edu" id="edu-${id}" type="text" placeholder="예) 1, 4, 7" value="${esc(row.eduDates)}" oninput="updateEdu(${id},this.value)" />
+          <span class="edu-count-badge ${count>0?'':'empty'}" id="badge-${id}">${count}회</span>
         </div>
       </td>
-      <td class="applied-rate ${rateClass}" id="rate-${id}">${rate ? '₩ '+fmt(rate)+' / 회' : '–'}</td>
-      <td class="result-cell ${resultClass}" id="result-${id}">${total > 0 ? '₩ '+fmt(total) : '–'}</td>
+      <td class="applied-rate ${rateClass}" id="rate-${id}">${rate?'₩'+fmt(rate)+'/회':'–'}</td>
+      <td class="result-cell ${resultClass}" id="result-${id}">${total>0?'₩'+fmt(total):'–'}</td>
       <td><button class="btn-del" onclick="removeRow(${id})" title="삭제">✕</button></td>`;
   }
 
-  function updateEdu(id, value) {
-    const row = rows.find(r => r.id === id);
-    if (!row) return;
-    row.eduDates = value;
-    const count = countEdu(value);
-    const badge = document.getElementById('badge-' + id);
-    if (badge) { badge.textContent = count+'회'; badge.className = 'edu-count-badge' + (count > 0 ? '' : ' empty'); }
-    updateResultCell(id);
-    calcTotal();
+  // ── 모바일 카드 HTML ──
+  function buildMobileCardHTML(id) {
+    const row = rows.find(r=>r.id===id);
+    const count = countEdu(row.eduDates);
+    const rate  = row.overtime ? rateOT : rateBasic;
+    const total = calcRow(row);
+    const rateClass   = !rate ? '' : row.overtime ? 'ot' : 'basic';
+    const resultClass = total>0 ? (row.overtime?'ot-value':'has-value') : '';
+    return `
+      <div class="mobile-card-top">
+        <input class="mobile-name-input" id="mname-${id}" type="text" placeholder="이름 입력" value="${esc(row.name)}" oninput="updateField(${id},'name',this.value)" />
+        <button class="btn-del" onclick="removeRow(${id})">✕</button>
+      </div>
+      <div class="mobile-card-body">
+        <div class="mobile-field">
+          <label>플타</label>
+          <label class="toggle">
+            <input type="checkbox" id="mot-${id}" ${row.overtime?'checked':''} onchange="updateField(${id},'overtime',this.checked)" />
+            <span class="toggle-pill"></span>
+            <span class="toggle-label" id="motlabel-${id}">${row.overtime?'ON':'OFF'}</span>
+          </label>
+        </div>
+        <div class="mobile-field">
+          <label>적용 단가</label>
+          <div class="mobile-rate ${rateClass}" id="mrate-${id}">${rate?'₩'+fmt(rate)+'/회':'–'}</div>
+        </div>
+        <div class="mobile-field" style="grid-column:1/-1">
+          <label>교육 날짜 (쉼표로 구분)</label>
+          <div class="mobile-edu-wrap">
+            <input class="mobile-edu-input" id="medu-${id}" type="text" placeholder="예) 1, 4, 7" value="${esc(row.eduDates)}" oninput="updateEdu(${id},this.value)" />
+            <span class="edu-count-badge ${count>0?'':'empty'}" id="mbadge-${id}">${count}회</span>
+          </div>
+        </div>
+        <div class="mobile-field" style="grid-column:1/-1">
+          <label>최종 금액</label>
+          <div class="mobile-result ${resultClass}" id="mresult-${id}">${total>0?'₩ '+fmt(total):'–'}</div>
+        </div>
+      </div>`;
   }
 
+  // ── 교육 날짜 업데이트 ──
+  function updateEdu(id, value) {
+    const row = rows.find(r=>r.id===id); if(!row) return;
+    row.eduDates = value;
+    const count = countEdu(value);
+    // PC 뱃지
+    const badge = document.getElementById('badge-'+id);
+    if(badge){ badge.textContent=count+'회'; badge.className='edu-count-badge'+(count>0?'':' empty'); }
+    // 모바일 뱃지
+    const mbadge = document.getElementById('mbadge-'+id);
+    if(mbadge){ mbadge.textContent=count+'회'; mbadge.className='edu-count-badge'+(count>0?'':' empty'); }
+    updateResultCell(id); calcTotal();
+  }
+
+  // ── 필드 업데이트 ──
   function updateField(id, field, value) {
-    const row = rows.find(r => r.id === id);
-    if (!row) return;
+    const row = rows.find(r=>r.id===id); if(!row) return;
     row[field] = value;
-    if (field === 'overtime') {
-      const lbl = document.getElementById('otlabel-' + id);
-      if (lbl) lbl.textContent = value ? 'ON' : 'OFF';
+    // 이름 동기화
+    if(field==='name') {
+      const pc=document.getElementById('name-'+id), mb=document.getElementById('mname-'+id);
+      if(pc&&document.activeElement!==pc) pc.value=value;
+      if(mb&&document.activeElement!==mb) mb.value=value;
+    }
+    if(field==='overtime') {
+      // PC 라벨
+      const lbl=document.getElementById('otlabel-'+id); if(lbl) lbl.textContent=value?'ON':'OFF';
+      const mlbl=document.getElementById('motlabel-'+id); if(mlbl) mlbl.textContent=value?'ON':'OFF';
+      // PC 체크박스 동기화
+      const pcot=document.getElementById('ot-'+id); if(pcot) pcot.checked=value;
+      const mbot=document.getElementById('mot-'+id); if(mbot) mbot.checked=value;
       updateRateCell(id);
     }
-    updateResultCell(id);
-    calcTotal();
+    updateResultCell(id); calcTotal();
   }
 
   function updateRateCell(id) {
-    const row = rows.find(r => r.id === id);
-    const rate = row.overtime ? rateOT : rateBasic;
-    const rateClass = !rate ? 'none' : row.overtime ? 'ot' : 'basic';
-    const el = document.getElementById('rate-' + id);
-    if (el) { el.className = 'applied-rate ' + rateClass; el.textContent = rate ? '₩ '+fmt(rate)+' / 회' : '–'; }
+    const row=rows.find(r=>r.id===id);
+    const rate=row.overtime?rateOT:rateBasic;
+    const rc=!rate?'none':row.overtime?'ot':'basic';
+    const txt=rate?'₩'+fmt(rate)+'/회':'–';
+    const el=document.getElementById('rate-'+id); if(el){el.className='applied-rate '+rc;el.textContent=txt;}
+    const mel=document.getElementById('mrate-'+id); if(mel){mel.className='mobile-rate '+rc;mel.textContent=txt;}
   }
 
   function updateResultCell(id) {
-    const row = rows.find(r => r.id === id);
-    const total = calcRow(row);
-    const resultClass = total > 0 ? (row.overtime ? 'ot-value' : 'has-value') : '';
-    const el = document.getElementById('result-' + id);
-    if (el) { el.className = 'result-cell ' + resultClass; el.textContent = total > 0 ? '₩ '+fmt(total) : '–'; }
+    const row=rows.find(r=>r.id===id);
+    const total=calcRow(row);
+    const rc=total>0?(row.overtime?'ot-value':'has-value'):'';
+    const el=document.getElementById('result-'+id);
+    if(el){el.className='result-cell '+rc;el.textContent=total>0?'₩'+fmt(total):'–';}
+    const mel=document.getElementById('mresult-'+id);
+    if(mel){mel.className='mobile-result '+rc;mel.textContent=total>0?'₩ '+fmt(total):'–';}
     updateRateCell(id);
   }
 
-  function refreshAllResults() { rows.forEach(r => updateResultCell(r.id)); calcTotal(); }
+  function refreshAllResults() { rows.forEach(r=>updateResultCell(r.id)); calcTotal(); }
 
   function removeRow(id) {
-    rows = rows.filter(r => r.id !== id);
-    const tr = document.getElementById('row-' + id);
-    if (tr) tr.remove();
+    rows=rows.filter(r=>r.id!==id);
+    const tr=document.getElementById('row-'+id); if(tr)tr.remove();
+    const mc=document.getElementById('mcard-'+id); if(mc)mc.remove();
     calcTotal();
   }
 
   function countEdu(str) {
-    if (!str || !str.trim()) return 0;
-    return str.split(',').map(s => s.trim()).filter(s => s !== '').length;
+    if(!str||!str.trim()) return 0;
+    return str.split(',').map(s=>s.trim()).filter(s=>s!=='').length;
   }
-
-  function calcRow(row) {
-    return countEdu(row.eduDates) * (row.overtime ? rateOT : rateBasic);
-  }
-
+  function calcRow(row) { return countEdu(row.eduDates)*(row.overtime?rateOT:rateBasic); }
   function calcTotal() {
-    const total    = rows.reduce((s, r) => s + calcRow(r), 0);
-    const otCount  = rows.filter(r => r.overtime).length;
-    const eduTotal = rows.reduce((s, r) => s + countEdu(r.eduDates), 0);
-    document.getElementById('totalDisplay').textContent = fmt(total);
-    document.getElementById('empCount').textContent = rows.length;
-    document.getElementById('otCount').textContent  = otCount;
-    document.getElementById('eduTotal').textContent = eduTotal;
+    const total=rows.reduce((s,r)=>s+calcRow(r),0);
+    document.getElementById('totalDisplay').textContent=fmt(total);
+    document.getElementById('empCount').textContent=rows.length;
+    document.getElementById('otCount').textContent=rows.filter(r=>r.overtime).length;
+    document.getElementById('eduTotal').textContent=rows.reduce((s,r)=>s+countEdu(r.eduDates),0);
   }
+  function fmt(n){return(n||0).toLocaleString('ko-KR');}
+  function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-  function fmt(n) { return (n||0).toLocaleString('ko-KR'); }
-  function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
-  // 모달 외부 클릭 닫기
-  document.getElementById('resetModal').addEventListener('click', function(e) {
-    if (e.target === this) closeResetModal();
-  });
+  document.getElementById('resetModal').addEventListener('click',function(e){if(e.target===this)closeResetModal();});
 </script>
 </body>
 </html>

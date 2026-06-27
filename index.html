@@ -70,6 +70,9 @@
     .input-name { background: transparent; border: none; border-bottom: 1px solid var(--border); color: var(--text); font-family: inherit; font-size: 0.95rem; padding: 4px 0; width: 100%; outline: none; transition: border-color 0.2s; text-align: center; }
     .input-name:focus { border-color: var(--accent-light); }
     .input-name::placeholder { color: var(--muted); }
+    .input-name.dup { border-color: var(--yellow); color: var(--yellow); }
+    .mobile-name-input.dup { border-color: var(--yellow); color: var(--yellow); }
+    .dup-badge { font-size: 0.7rem; color: var(--yellow); font-weight: 700; margin-left: 4px; white-space: nowrap; }
 
     /* 플타 세그먼트 탭 (PC + 모바일 공통) */
     .seg-wrap { display: inline-flex; border-radius: 8px; border: 1px solid var(--border); overflow: hidden; background: var(--surface2); }
@@ -715,6 +718,7 @@
       const pc=document.getElementById('name-'+id), mb=document.getElementById('mname-'+id);
       if(pc&&document.activeElement!==pc) pc.value=value;
       if(mb&&document.activeElement!==mb) mb.value=value;
+      checkDuplicateNames();
     }
     updateResultCell(id); calcTotal();
   }
@@ -748,12 +752,31 @@
     calcTotal();
   }
 
+  // ── 중복 이름 체크 ──
+  function checkDuplicateNames() {
+    const nameCount = {};
+    rows.forEach(r => {
+      const n = r.name.trim();
+      if (n) nameCount[n] = (nameCount[n]||0) + 1;
+    });
+    rows.forEach(r => {
+      const n = r.name.trim();
+      const isDup = n && nameCount[n] > 1;
+      const pc = document.getElementById('name-'+r.id);
+      const mb = document.getElementById('mname-'+r.id);
+      if (pc) pc.classList.toggle('dup', isDup);
+      if (mb) mb.classList.toggle('dup', isDup);
+    });
+  }
+
   function countEdu(str) { return getSelectedDays(str).size; }
   function calcRow(row) { return countEdu(row.eduDates)*(row.overtime?rateOT:rateBasic); }
   function calcTotal() {
     const total=rows.reduce((s,r)=>s+calcRow(r),0);
     document.getElementById('totalDisplay').textContent=fmt(total);
-    document.getElementById('empCount').textContent=rows.length;
+    // 이름 있는 행만, 중복 이름 제외해서 고유 인원 수 계산
+    const uniqueNames = new Set(rows.map(r=>r.name.trim()).filter(n=>n!==''));
+    document.getElementById('empCount').textContent=uniqueNames.size;
     document.getElementById('otCount').textContent=rows.filter(r=>r.overtime).length;
     document.getElementById('eduTotal').textContent=rows.reduce((s,r)=>s+countEdu(r.eduDates),0);
   }

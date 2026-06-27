@@ -88,14 +88,16 @@
     .edu-cell { display: flex; align-items: center; justify-content: center; gap: 8px; }
     .edu-trigger {
       display: flex; align-items: center; gap: 8px; cursor: pointer;
-      padding: 5px 10px; border-radius: 7px; border: 1px solid var(--border);
+      padding: 6px 10px; border-radius: 7px; border: 1px solid var(--border);
       background: var(--surface2); transition: border-color 0.15s, background 0.15s;
-      min-width: 120px; justify-content: space-between;
+      min-width: 140px; justify-content: space-between;
     }
     .edu-trigger:hover { border-color: var(--yellow); background: rgba(179,138,0,0.06); }
+    .edu-trigger-inner { display: flex; flex-direction: column; gap: 2px; }
     .edu-trigger-text { font-size: 0.82rem; color: var(--muted); }
     .edu-trigger-text.has-days { color: var(--yellow); font-weight: 700; }
-    .edu-trigger-icon { font-size: 0.85rem; opacity: .5; }
+    .edu-trigger-dates { font-size: 0.72rem; color: var(--muted); line-height: 1.3; word-break: break-all; }
+    .edu-trigger-icon { font-size: 0.85rem; opacity: .5; flex-shrink: 0; }
 
     /* 팝업 달력 오버레이 */
     .cal-popup-overlay {
@@ -302,7 +304,7 @@
     <thead>
       <tr>
         <th style="width:12%">이름</th>
-        <th style="width:8%">플타</th>
+        <th style="width:8%">교육선택</th>
         <th style="width:44%">교육 날짜 <span style="font-weight:400;opacity:.5;font-size:0.72rem">(날짜 클릭으로 선택)</span></th>
         <th style="width:16%">적용 단가</th>
         <th style="width:15%">최종 금액</th>
@@ -510,7 +512,10 @@
       <td>
         <div class="edu-cell">
           <div class="edu-trigger" onclick="openCalPopup(${id})" id="trigger-${id}">
-            <span class="edu-trigger-text ${count>0?'has-days':''}" id="trigtext-${id}">${count>0?count+'일 선택됨':'날짜 선택'}</span>
+            <div class="edu-trigger-inner">
+              <span class="edu-trigger-text ${count>0?'has-days':''}" id="trigtext-${id}">${count>0?count+'일 선택됨':'날짜 선택'}</span>
+              <span class="edu-trigger-dates" id="trigdates-${id}">${count>0?row.eduDates:''}</span>
+            </div>
             <span class="edu-trigger-icon">📅</span>
           </div>
         </div>
@@ -547,7 +552,10 @@
         <div class="mobile-field" style="grid-column:1/-1">
           <label>교육 날짜</label>
           <div class="edu-trigger" onclick="openCalPopup(${id})" id="mtrigger-${id}">
-            <span class="edu-trigger-text ${count>0?'has-days':''}" id="mtrigtext-${id}">${count>0?count+'일 선택됨':'날짜 선택'}</span>
+            <div class="edu-trigger-inner">
+              <span class="edu-trigger-text ${count>0?'has-days':''}" id="mtrigtext-${id}">${count>0?count+'일 선택됨':'날짜 선택'}</span>
+              <span class="edu-trigger-dates" id="mtrigdates-${id}">${count>0?row.eduDates:''}</span>
+            </div>
             <span class="edu-trigger-icon">📅</span>
           </div>
         </div>
@@ -685,6 +693,12 @@
     ['trigtext-'+id, 'mtrigtext-'+id].forEach(elId => {
       const el = document.getElementById(elId); if(!el) return;
       el.textContent = txt; el.className = cls;
+    });
+    // 날짜 목록 서브텍스트 갱신
+    const datesTxt = cnt > 0 ? row.eduDates : '';
+    ['trigdates-'+id, 'mtrigdates-'+id].forEach(elId => {
+      const el = document.getElementById(elId); if(!el) return;
+      el.textContent = datesTxt;
     });
   }
 

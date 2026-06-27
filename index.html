@@ -72,22 +72,93 @@
     .input-name::placeholder { color: var(--muted); }
 
     /* 플타 토글 */
-    .toggle { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
+    .toggle { display: inline-flex; align-items: center; gap: 0; cursor: pointer; user-select: none; }
     .toggle input[type="checkbox"] { display: none; }
     .toggle-pill { width: 40px; height: 22px; background: var(--border); border-radius: 999px; position: relative; transition: background 0.2s; flex-shrink: 0; }
     .toggle-pill::after { content: ''; position: absolute; width: 16px; height: 16px; background: #fff; border-radius: 50%; top: 3px; left: 3px; transition: transform 0.2s; }
     .toggle input:checked + .toggle-pill { background: var(--accent); }
     .toggle input:checked + .toggle-pill::after { transform: translateX(18px); }
-    .toggle-label { font-size: 0.78rem; color: var(--muted); min-width: 26px; }
-    .toggle input:checked ~ .toggle-label { color: var(--accent-light); font-weight: 600; }
+    .toggle-label { display: none; } /* 라벨 숨김 – pill 색으로 상태 표현 */
 
-    /* 교육 날짜 */
+    /* 교육날짜 셀 – 클릭 트리거 영역 */
     .edu-cell { display: flex; align-items: center; justify-content: center; gap: 8px; }
-    .input-edu { background: transparent; border: none; border-bottom: 1px solid var(--border); color: var(--text); font-family: inherit; font-size: 0.93rem; padding: 4px 0; width: 180px; outline: none; transition: border-color 0.2s; text-align: center; }
-    .input-edu:focus { border-color: var(--yellow); }
-    .input-edu::placeholder { color: var(--muted); font-size: 0.82rem; }
-    .edu-count-badge { background: rgba(179,138,0,0.1); color: var(--yellow); font-size: 0.78rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; white-space: nowrap; min-width: 36px; text-align: center; }
-    .edu-count-badge.empty { visibility: hidden; }
+    .edu-trigger {
+      display: flex; align-items: center; gap: 8px; cursor: pointer;
+      padding: 5px 10px; border-radius: 7px; border: 1px solid var(--border);
+      background: var(--surface2); transition: border-color 0.15s, background 0.15s;
+      min-width: 120px; justify-content: space-between;
+    }
+    .edu-trigger:hover { border-color: var(--yellow); background: rgba(179,138,0,0.06); }
+    .edu-trigger-text { font-size: 0.82rem; color: var(--muted); }
+    .edu-trigger-text.has-days { color: var(--yellow); font-weight: 700; }
+    .edu-trigger-icon { font-size: 0.85rem; opacity: .5; }
+
+    /* 팝업 달력 오버레이 */
+    .cal-popup-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.35); z-index: 2000;
+      align-items: center; justify-content: center;
+    }
+    .cal-popup-overlay.show { display: flex; }
+    .cal-popup {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 20px; width: min(360px, 92vw);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+    }
+    /* 달력 헤더 – 연/월 + 이전/다음 */
+    .cal-popup-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .cal-popup-title { font-size: 1rem; font-weight: 700; color: var(--text); }
+    .cal-popup-title span { color: var(--accent-light); }
+    .cal-nav-btn {
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--text); font-size: 0.95rem; width: 30px; height: 30px;
+      border-radius: 7px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+    }
+    .cal-nav-btn:hover { background: rgba(108,99,255,0.1); border-color: var(--accent-light); }
+    /* 요일 헤더 */
+    .cal-dow-row {
+      display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-bottom: 4px;
+    }
+    .cal-dow { font-size: 0.68rem; font-weight: 700; color: var(--muted);
+      text-align: center; padding: 2px 0; text-transform: uppercase; }
+    .cal-dow:first-child { color: #e04040; }
+    .cal-dow:last-child  { color: var(--accent-light); }
+    /* 날짜 그리드 */
+    .cal-grid {
+      display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;
+    }
+    .cal-day {
+      aspect-ratio: 1; border-radius: 7px; border: 1px solid var(--border);
+      background: var(--surface2); color: var(--text);
+      font-size: 0.8rem; font-weight: 600; font-family: inherit;
+      cursor: pointer; transition: all 0.12s;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0; width: 100%;
+    }
+    .cal-day:hover { border-color: var(--yellow); background: rgba(179,138,0,0.08); }
+    .cal-day.selected { background: var(--yellow); border-color: var(--yellow); color: #fff; }
+    .cal-day.today { border-color: var(--accent-light); }
+    .cal-day.empty { background: transparent; border-color: transparent; cursor: default; }
+    .cal-day.out-of-month { opacity: 0.3; }
+    /* 달력 하단 */
+    .cal-popup-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border);
+    }
+    .cal-count-label { font-size: 0.82rem; color: var(--yellow); font-weight: 700; }
+    .cal-count-label.empty { color: var(--muted); font-weight: 400; }
+    .cal-footer-btns { display: flex; gap: 8px; }
+    .cal-btn-clear { background: none; border: 1px solid var(--border); color: var(--muted);
+      font-family: inherit; font-size: 0.8rem; padding: 5px 12px; border-radius: 7px; cursor: pointer; }
+    .cal-btn-clear:hover { color: var(--danger); border-color: rgba(224,62,62,0.4); }
+    .cal-btn-done { background: var(--accent); border: none; color: #fff;
+      font-family: inherit; font-size: 0.8rem; font-weight: 700;
+      padding: 5px 14px; border-radius: 7px; cursor: pointer; }
+    .cal-btn-done:hover { background: var(--accent-light); }
 
     /* 적용 단가 */
     .applied-rate { font-size: 0.85rem; white-space: nowrap; text-align: center; font-weight: 600; }
@@ -158,6 +229,7 @@
     }
     .mobile-edu-input:focus { border-color: var(--yellow); }
     .mobile-edu-input::placeholder { color: var(--muted); font-size: 0.82rem; }
+    .mobile-field.full { grid-column: 1 / -1; }
     .mobile-result { font-size: 1.05rem; font-weight: 700; color: var(--muted); }
     .mobile-result.has-value { color: var(--green); }
     .mobile-result.ot-value  { color: var(--accent-light); }
@@ -218,9 +290,9 @@
   <table>
     <thead>
       <tr>
-        <th style="width:16%">이름</th>
-        <th style="width:10%">플타</th>
-        <th style="width:38%">교육 날짜 <span style="font-weight:400;opacity:.5;font-size:0.72rem">(쉼표 구분 · 예: 1, 4, 7)</span></th>
+        <th style="width:12%">이름</th>
+        <th style="width:8%">플타</th>
+        <th style="width:44%">교육 날짜 <span style="font-weight:400;opacity:.5;font-size:0.72rem">(날짜 클릭으로 선택)</span></th>
         <th style="width:16%">적용 단가</th>
         <th style="width:15%">최종 금액</th>
         <th style="width:5%"></th>
@@ -229,21 +301,44 @@
     <tbody id="tableBody"></tbody>
   </table>
   <div class="add-row-wrap">
-    <button class="btn-add" onclick="addRow()">＋ 직원 추가</button>
+    <button class="btn-add" onclick="addRow()">＋ 아이 추가</button>
   </div>
 </div>
 
 <!-- 모바일 카드 리스트 -->
 <div class="mobile-list" id="mobileList"></div>
-<button class="mobile-add-btn" id="mobileAddBtn" style="display:none;max-width:980px;margin:0 auto;" onclick="addRow()">＋ 직원 추가</button>
+<button class="mobile-add-btn" id="mobileAddBtn" style="display:none;max-width:980px;margin:0 auto;" onclick="addRow()">＋ 아이 추가</button>
 
 <!-- 합계 -->
 <div class="summary">
   <div class="summary-left">
     <div class="label">총 합계</div>
-    <div class="sub">직원 <span id="empCount">0</span>명 · 플타 <span id="otCount">0</span>명 · 총 교육 <span id="eduTotal">0</span>회</div>
+    <div class="sub">아이 <span id="empCount">0</span>명 · 플타 <span id="otCount">0</span>명 · 총 교육 <span id="eduTotal">0</span>회</div>
   </div>
   <div class="total-amount"><sup>₩</sup><span id="totalDisplay">0</span></div>
+</div>
+
+<!-- 달력 팝업 -->
+<div class="cal-popup-overlay" id="calPopupOverlay" onclick="calOverlayClick(event)">
+  <div class="cal-popup">
+    <div class="cal-popup-header">
+      <button class="cal-nav-btn" onclick="calNavMonth(-1)">‹</button>
+      <div class="cal-popup-title" id="calPopupTitle"></div>
+      <button class="cal-nav-btn" onclick="calNavMonth(1)">›</button>
+    </div>
+    <div class="cal-dow-row">
+      <div class="cal-dow">일</div><div class="cal-dow">월</div><div class="cal-dow">화</div>
+      <div class="cal-dow">수</div><div class="cal-dow">목</div><div class="cal-dow">금</div><div class="cal-dow">토</div>
+    </div>
+    <div class="cal-grid" id="calPopupGrid"></div>
+    <div class="cal-popup-footer">
+      <span class="cal-count-label" id="calPopupCount">선택 없음</span>
+      <div class="cal-footer-btns">
+        <button class="cal-btn-clear" onclick="calClearAll()">전체 해제</button>
+        <button class="cal-btn-done" onclick="calClose()">완료</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="save-toast" id="toast"></div>
@@ -279,6 +374,7 @@
             const id = idCounter++;
             rows.push({ id, name: r.name||'', overtime: !!r.overtime, eduDates: r.eduDates||'' });
             appendRowDOM(id);
+            updateTrigger(id);
           });
           checkMobileBtn();
           return;
@@ -399,8 +495,10 @@
       </td>
       <td>
         <div class="edu-cell">
-          <input class="input-edu" id="edu-${id}" type="text" placeholder="예) 1, 4, 7" value="${esc(row.eduDates)}" oninput="updateEdu(${id},this.value)" />
-          <span class="edu-count-badge ${count>0?'':'empty'}" id="badge-${id}">${count}회</span>
+          <div class="edu-trigger" onclick="openCalPopup(${id})" id="trigger-${id}">
+            <span class="edu-trigger-text ${count>0?'has-days':''}" id="trigtext-${id}">${count>0?count+'일 선택됨':'날짜 선택'}</span>
+            <span class="edu-trigger-icon">📅</span>
+          </div>
         </div>
       </td>
       <td class="applied-rate ${rateClass}" id="rate-${id}">${rate?'₩'+fmt(rate)+'/회':'–'}</td>
@@ -435,10 +533,10 @@
           <div class="mobile-rate ${rateClass}" id="mrate-${id}">${rate?'₩'+fmt(rate)+'/회':'–'}</div>
         </div>
         <div class="mobile-field" style="grid-column:1/-1">
-          <label>교육 날짜 (쉼표로 구분)</label>
-          <div class="mobile-edu-wrap">
-            <input class="mobile-edu-input" id="medu-${id}" type="text" placeholder="예) 1, 4, 7" value="${esc(row.eduDates)}" oninput="updateEdu(${id},this.value)" />
-            <span class="edu-count-badge ${count>0?'':'empty'}" id="mbadge-${id}">${count}회</span>
+          <label>교육 날짜</label>
+          <div class="edu-trigger" onclick="openCalPopup(${id})" id="mtrigger-${id}">
+            <span class="edu-trigger-text ${count>0?'has-days':''}" id="mtrigtext-${id}">${count>0?count+'일 선택됨':'날짜 선택'}</span>
+            <span class="edu-trigger-icon">📅</span>
           </div>
         </div>
         <div class="mobile-field" style="grid-column:1/-1">
@@ -448,18 +546,134 @@
       </div>`;
   }
 
-  // ── 교육 날짜 업데이트 ──
-  function updateEdu(id, value) {
-    const row = rows.find(r=>r.id===id); if(!row) return;
-    row.eduDates = value;
-    const count = countEdu(value);
-    // PC 뱃지
-    const badge = document.getElementById('badge-'+id);
-    if(badge){ badge.textContent=count+'회'; badge.className='edu-count-badge'+(count>0?'':' empty'); }
-    // 모바일 뱃지
-    const mbadge = document.getElementById('mbadge-'+id);
-    if(mbadge){ mbadge.textContent=count+'회'; mbadge.className='edu-count-badge'+(count>0?'':' empty'); }
-    updateResultCell(id); calcTotal();
+  // ══════════════════════════════════════
+  //  팝업 달력 상태
+  // ══════════════════════════════════════
+  let calActiveId   = null;   // 현재 열린 행 id
+  let calYear       = 0;      // 팝업에 표시 중인 연도
+  let calMonth      = 0;      // 팝업에 표시 중인 월 (0-indexed)
+  let calSelected   = new Set(); // 선택된 날짜(일) 집합
+
+  function getSelectedDays(str) {
+    const set = new Set();
+    if (!str || !str.trim()) return set;
+    str.split(',').map(s=>parseInt(s.trim(),10)).filter(n=>n>=1&&n<=31).forEach(n=>set.add(n));
+    return set;
+  }
+  function daysToString(set) { return [...set].sort((a,b)=>a-b).join(', '); }
+
+  const KOR_MONTHS = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+  const today = new Date();
+
+  function openCalPopup(id) {
+    calActiveId = id;
+    const row = rows.find(r=>r.id===id);
+    calSelected = getSelectedDays(row.eduDates);
+    // 현재 날짜 기준으로 연/월 초기화
+    calYear  = today.getFullYear();
+    calMonth = today.getMonth();
+    renderCalPopup();
+    document.getElementById('calPopupOverlay').classList.add('show');
+  }
+
+  function calClose() {
+    // 선택 결과를 행에 저장
+    if (calActiveId !== null) {
+      const row = rows.find(r=>r.id===calActiveId);
+      if (row) {
+        row.eduDates = daysToString(calSelected);
+        updateTrigger(calActiveId);
+        updateResultCell(calActiveId);
+        calcTotal();
+      }
+    }
+    document.getElementById('calPopupOverlay').classList.remove('show');
+    calActiveId = null;
+  }
+
+  function calOverlayClick(e) {
+    if (e.target === document.getElementById('calPopupOverlay')) calClose();
+  }
+
+  function calNavMonth(dir) {
+    calMonth += dir;
+    if (calMonth > 11) { calMonth = 0; calYear++; }
+    if (calMonth < 0)  { calMonth = 11; calYear--; }
+    renderCalPopup();
+  }
+
+  function renderCalPopup() {
+    // 헤더 제목
+    document.getElementById('calPopupTitle').innerHTML =
+      `<span>${calYear}년</span> ${KOR_MONTHS[calMonth]}`;
+
+    // 해당 월의 일 수 및 시작 요일
+    const firstDay = new Date(calYear, calMonth, 1).getDay(); // 0=일
+    const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+    const grid = document.getElementById('calPopupGrid');
+    grid.innerHTML = '';
+
+    // 빈 셀 (월 시작 전)
+    for (let i = 0; i < firstDay; i++) {
+      const blank = document.createElement('div');
+      blank.className = 'cal-day empty';
+      grid.appendChild(blank);
+    }
+
+    // 날짜 셀
+    for (let d = 1; d <= daysInMonth; d++) {
+      const btn = document.createElement('button');
+      btn.className = 'cal-day' + (calSelected.has(d) ? ' selected' : '');
+      // 오늘 표시
+      if (d === today.getDate() && calMonth === today.getMonth() && calYear === today.getFullYear()) {
+        btn.classList.add('today');
+      }
+      btn.textContent = d;
+      btn.onclick = () => calToggleDay(d);
+      grid.appendChild(btn);
+    }
+
+    // 하단 카운트
+    updateCalFooter();
+  }
+
+  function calToggleDay(d) {
+    if (calSelected.has(d)) calSelected.delete(d); else calSelected.add(d);
+    // 버튼 클래스 토글
+    const grid = document.getElementById('calPopupGrid');
+    grid.querySelectorAll('.cal-day:not(.empty)').forEach(btn => {
+      const day = parseInt(btn.textContent, 10);
+      btn.classList.toggle('selected', calSelected.has(day));
+    });
+    updateCalFooter();
+  }
+
+  function calClearAll() {
+    calSelected.clear();
+    document.getElementById('calPopupGrid').querySelectorAll('.cal-day').forEach(btn => {
+      btn.classList.remove('selected');
+    });
+    updateCalFooter();
+  }
+
+  function updateCalFooter() {
+    const el = document.getElementById('calPopupCount');
+    const cnt = calSelected.size;
+    if (cnt === 0) { el.textContent = '선택 없음'; el.className = 'cal-count-label empty'; }
+    else { el.textContent = `${cnt}일 선택됨 (${cnt}회)`; el.className = 'cal-count-label'; }
+  }
+
+  // 트리거 버튼 텍스트 갱신
+  function updateTrigger(id) {
+    const row = rows.find(r=>r.id===id);
+    const cnt = countEdu(row.eduDates);
+    const txt = cnt > 0 ? cnt+'일 선택됨' : '날짜 선택';
+    const cls = 'edu-trigger-text' + (cnt > 0 ? ' has-days' : '');
+    ['trigtext-'+id, 'mtrigtext-'+id].forEach(elId => {
+      const el = document.getElementById(elId); if(!el) return;
+      el.textContent = txt; el.className = cls;
+    });
   }
 
   // ── 필드 업데이트 ──
@@ -513,10 +727,7 @@
     calcTotal();
   }
 
-  function countEdu(str) {
-    if(!str||!str.trim()) return 0;
-    return str.split(',').map(s=>s.trim()).filter(s=>s!=='').length;
-  }
+  function countEdu(str) { return getSelectedDays(str).size; }
   function calcRow(row) { return countEdu(row.eduDates)*(row.overtime?rateOT:rateBasic); }
   function calcTotal() {
     const total=rows.reduce((s,r)=>s+calcRow(r),0);

@@ -71,25 +71,15 @@
     .input-name:focus { border-color: var(--accent-light); }
     .input-name::placeholder { color: var(--muted); }
 
-    /* 플타 토글 */
-    .toggle { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
-    .toggle input[type="checkbox"] { display: none; }
-    .toggle-pill {
-      width: 44px; height: 26px; background: var(--border);
-      border-radius: 999px; position: relative; transition: background 0.2s; flex-shrink: 0;
+    /* 플타 세그먼트 탭 (PC + 모바일 공통) */
+    .seg-wrap { display: inline-flex; border-radius: 8px; border: 1px solid var(--border); overflow: hidden; background: var(--surface2); }
+    .seg-btn {
+      flex: 1; padding: 6px 16px; font-family: inherit; font-size: 0.85rem; font-weight: 700;
+      border: none; background: transparent; color: var(--muted); cursor: pointer;
+      transition: all 0.15s; white-space: nowrap;
     }
-    .toggle-pill::after {
-      content: ''; position: absolute; width: 20px; height: 20px;
-      background: #fff; border-radius: 50%; top: 3px; left: 3px;
-      transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-    }
-    .toggle input:checked + .toggle-pill { background: var(--accent); }
-    .toggle input:checked + .toggle-pill::after { transform: translateX(18px); }
-    .toggle-label {
-      font-size: 0.82rem; font-weight: 700; color: var(--muted);
-      min-width: 28px; transition: color 0.2s;
-    }
-    .toggle input:checked ~ .toggle-label { color: var(--accent-light); }
+    .seg-btn.active-basic  { background: var(--green);        color: #fff; }
+    .seg-btn.active-ot     { background: var(--accent);       color: #fff; }
 
     /* 교육날짜 셀 – 클릭 트리거 영역 */
     .edu-cell { display: flex; align-items: center; justify-content: center; gap: 8px; }
@@ -241,21 +231,13 @@
     .mobile-edu-input:focus { border-color: var(--yellow); }
     .mobile-edu-input::placeholder { color: var(--muted); font-size: 0.82rem; }
     .mobile-field.full { grid-column: 1 / -1; }
-    /* 플타 + 단가 한 줄 레이아웃 */
+    /* 플타 + 단가 한 줄 */
     .mobile-plta-row {
-      grid-column: 1 / -1;
-      display: flex; align-items: center; gap: 10px;
-      background: var(--surface2); border-radius: 8px; padding: 10px 12px;
+      grid-column: 1 / -1; display: flex; align-items: center;
+      justify-content: space-between; gap: 12px;
     }
-    .mobile-plta-label {
-      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.06em; color: var(--muted); white-space: nowrap;
-    }
-    .mobile-plta-sep { flex: 1; }
-    .mobile-plta-rate-label {
-      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.06em; color: var(--muted); white-space: nowrap;
-    }
+    .mobile-plta-right { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+    .mobile-plta-rate-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
     .mobile-result { font-size: 1.05rem; font-weight: 700; color: var(--muted); }
     .mobile-result.has-value { color: var(--green); }
     .mobile-result.ot-value  { color: var(--accent-light); }
@@ -513,11 +495,10 @@
     return `
       <td><input class="input-name" id="name-${id}" type="text" placeholder="이름" value="${esc(row.name)}" oninput="updateField(${id},'name',this.value)" /></td>
       <td>
-        <label class="toggle">
-          <input type="checkbox" id="ot-${id}" ${row.overtime?'checked':''} onchange="updateField(${id},'overtime',this.checked)" />
-          <span class="toggle-pill"></span>
-          <span class="toggle-label" id="otlabel-${id}">${row.overtime?'ON':'OFF'}</span>
-        </label>
+        <div class="seg-wrap">
+          <button class="seg-btn ${!row.overtime?'active-basic':''}" onclick="setOvertime(${id},false)">기본</button>
+          <button class="seg-btn ${row.overtime?'active-ot':''}"    onclick="setOvertime(${id},true)">플타</button>
+        </div>
       </td>
       <td>
         <div class="edu-cell">
@@ -546,16 +527,15 @@
         <button class="btn-del" onclick="removeRow(${id})">✕</button>
       </div>
       <div class="mobile-card-body">
-        <div class="mobile-field mobile-plta-row">
-          <div class="mobile-plta-label">플타</div>
-          <label class="toggle">
-            <input type="checkbox" id="mot-${id}" ${row.overtime?'checked':''} onchange="updateField(${id},'overtime',this.checked)" />
-            <span class="toggle-pill"></span>
-            <span class="toggle-label" id="motlabel-${id}">${row.overtime?'ON':'OFF'}</span>
-          </label>
-          <div class="mobile-plta-sep"></div>
-          <div class="mobile-plta-rate-label">적용 단가</div>
-          <div class="mobile-rate ${rateClass}" id="mrate-${id}">${rate?'₩'+fmt(rate)+'/회':'–'}</div>
+        <div class="mobile-plta-row">
+          <div class="seg-wrap" style="flex:1">
+            <button class="seg-btn ${!row.overtime?'active-basic':''}" onclick="setOvertime(${id},false)" id="mseg-basic-${id}">기본</button>
+            <button class="seg-btn ${row.overtime?'active-ot':''}"    onclick="setOvertime(${id},true)"  id="mseg-ot-${id}">플타</button>
+          </div>
+          <div class="mobile-plta-right">
+            <span class="mobile-plta-rate-label">적용 단가</span>
+            <div class="mobile-rate ${rateClass}" id="mrate-${id}">${rate?'₩'+fmt(rate)+'/회':'–'}</div>
+          </div>
         </div>
         <div class="mobile-field" style="grid-column:1/-1">
           <label>교육 날짜</label>
@@ -701,24 +681,36 @@
     });
   }
 
+  // ── 플타/기본 세그먼트 탭 ──
+  function setOvertime(id, value) {
+    const row = rows.find(r=>r.id===id); if(!row) return;
+    row.overtime = value;
+    // PC 탭 갱신
+    const pcRow = document.getElementById('row-'+id);
+    if (pcRow) {
+      pcRow.querySelectorAll('.seg-btn').forEach(btn => {
+        btn.className = 'seg-btn';
+        if (btn.textContent==='기본' && !value) btn.classList.add('active-basic');
+        if (btn.textContent==='플타'  &&  value) btn.classList.add('active-ot');
+      });
+    }
+    // 모바일 탭 갱신
+    const mb = document.getElementById('mseg-basic-'+id);
+    const mo = document.getElementById('mseg-ot-'+id);
+    if (mb) mb.className = 'seg-btn' + (!value ? ' active-basic' : '');
+    if (mo) mo.className = 'seg-btn' + ( value ? ' active-ot'    : '');
+    updateRateCell(id);
+    updateResultCell(id); calcTotal();
+  }
+
   // ── 필드 업데이트 ──
   function updateField(id, field, value) {
     const row = rows.find(r=>r.id===id); if(!row) return;
     row[field] = value;
-    // 이름 동기화
     if(field==='name') {
       const pc=document.getElementById('name-'+id), mb=document.getElementById('mname-'+id);
       if(pc&&document.activeElement!==pc) pc.value=value;
       if(mb&&document.activeElement!==mb) mb.value=value;
-    }
-    if(field==='overtime') {
-      // PC 라벨
-      const lbl=document.getElementById('otlabel-'+id); if(lbl) lbl.textContent=value?'ON':'OFF';
-      const mlbl=document.getElementById('motlabel-'+id); if(mlbl) mlbl.textContent=value?'ON':'OFF';
-      // PC 체크박스 동기화
-      const pcot=document.getElementById('ot-'+id); if(pcot) pcot.checked=value;
-      const mbot=document.getElementById('mot-'+id); if(mbot) mbot.checked=value;
-      updateRateCell(id);
     }
     updateResultCell(id); calcTotal();
   }

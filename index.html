@@ -420,15 +420,19 @@
   function exportExcel() {
     const now = new Date();
     const ym  = `${now.getFullYear()}년 ${now.getMonth()+1}월`;
+    // 이름 있는 행만 필터링
+    const validRows = rows.filter(r => r.name && r.name.trim() !== '');
     let csv = '\uFEFF';
     csv += `월급 계산서 (${ym})\n\n기본 단가,${rateBasic}원\n플타 단가,${rateOT}원\n\n`;
     csv += `이름,플타,교육날짜,교육횟수,적용단가,최종금액\n`;
-    rows.forEach(r => {
+    validRows.forEach(r => {
       const count = countEdu(r.eduDates), rate = r.overtime ? rateOT : rateBasic;
-      csv += `${r.name},${r.overtime?'플타':'기본'},${r.eduDates},${count}회,${rate}원,${count*rate}원\n`;
+      // 교육날짜를 쌍따옴표로 감싸서 쉼표가 있어도 한 셀에 표시
+      const datesCell = r.eduDates ? `"${r.eduDates}"` : '–';
+      csv += `${r.name},${r.overtime?'플타':'기본'},${datesCell},${count}회,${rate}원,${count*rate}원\n`;
     });
-    const totalAll = rows.reduce((s,r)=>s+calcRow(r),0);
-    const eduAll   = rows.reduce((s,r)=>s+countEdu(r.eduDates),0);
+    const totalAll = validRows.reduce((s,r)=>s+calcRow(r),0);
+    const eduAll   = validRows.reduce((s,r)=>s+countEdu(r.eduDates),0);
     csv += `\n합계,,,${eduAll}회,,${totalAll}원\n`;
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));

@@ -11,7 +11,9 @@
       --bg: #f4f6fb; --surface: #ffffff; --surface2: #eef0f7;
       --border: #dde1ee; --accent: #6c63ff; --accent-light: #5a52e0;
       --green: #179e68; --text: #1e2133; --muted: #8a8fa8;
-      --danger: #e03e3e; --yellow: #b38a00; --extra: #c0550a; --radius: 10px;
+      --danger: #e03e3e; --yellow: #b38a00;
+      --weekend: #c0550a;
+      --radius: 10px;
     }
     body { background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; min-height: 100vh; padding: 40px 16px 80px; }
 
@@ -20,6 +22,7 @@
     header h1 span { color: var(--accent-light); }
     header p { color: var(--muted); margin-top: 6px; font-size: 0.92rem; }
 
+    /* 월 선택기 */
     .month-bar { max-width: 980px; margin: 0 auto 12px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .month-nav { display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: 9px; padding: 6px 10px; }
     .month-nav-btn { background: none; border: none; font-size: 1rem; cursor: pointer; color: var(--muted); padding: 0 4px; line-height: 1; transition: color 0.15s; }
@@ -31,6 +34,7 @@
     .month-chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
     .month-chip.has-data { border-color: rgba(108,99,255,0.4); color: var(--accent-light); background: rgba(108,99,255,0.07); }
 
+    /* 툴바 */
     .toolbar { max-width: 980px; margin: 0 auto 14px; display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
     .btn-tool { display: flex; align-items: center; gap: 6px; font-family: inherit; font-size: 0.84rem; font-weight: 600; padding: 8px 16px; border-radius: 7px; cursor: pointer; border: 1px solid var(--border); transition: all 0.15s; }
     .btn-tool.save  { background: rgba(108,99,255,0.10); color: var(--accent-light); border-color: rgba(108,99,255,0.3); }
@@ -40,16 +44,19 @@
     .btn-tool.reset { background: rgba(224,62,62,0.07); color: var(--danger); border-color: rgba(224,62,62,0.25); }
     .btn-tool.reset:hover { background: rgba(224,62,62,0.15); }
 
+    /* 토스트 */
     .save-toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px); background: #1e2133; border: 1px solid #333; color: #fff; font-size: 0.88rem; padding: 10px 20px; border-radius: 30px; opacity: 0; transition: opacity 0.3s, transform 0.3s; pointer-events: none; white-space: nowrap; z-index: 999; }
     .save-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    .rate-panel { max-width: 980px; margin: 0 auto 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 24px; display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
+    /* 단가 패널 */
+    .rate-panel { max-width: 980px; margin: 0 auto 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 24px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
     .rate-panel .panel-title { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; white-space: nowrap; }
     .rate-group { display: flex; align-items: center; gap: 10px; }
     .rate-label { font-size: 0.88rem; color: var(--muted); white-space: nowrap; }
     .rate-badge { display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; margin-right: 4px; vertical-align: middle; }
-    .rate-badge.basic { background: rgba(23,158,104,0.12); color: var(--green); }
-    .rate-badge.ot    { background: rgba(90,82,224,0.12); color: var(--accent-light); }
+    .rate-badge.basic   { background: rgba(23,158,104,0.12); color: var(--green); }
+    .rate-badge.ot      { background: rgba(90,82,224,0.12); color: var(--accent-light); }
+    .rate-badge.weekend { background: rgba(192,85,10,0.12); color: var(--weekend); }
     .rate-input-wrap { display: flex; align-items: center; gap: 4px; background: var(--surface2); border: 1px solid var(--border); border-radius: 7px; padding: 6px 12px; transition: border-color 0.2s; }
     .rate-input-wrap:focus-within { border-color: var(--accent-light); }
     .rate-input-wrap span { color: var(--muted); font-size: 0.85rem; }
@@ -60,17 +67,11 @@
     /* PC 테이블 */
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; max-width: 980px; margin: 0 auto; }
     table { width: 100%; border-collapse: collapse; }
-    thead th {
-      background: var(--surface2); padding: 12px 14px;
-      font-size: 0.77rem; font-weight: 600; text-transform: uppercase;
-      letter-spacing: 0.06em; color: var(--muted);
-      text-align: center;
-      border-bottom: 1px solid var(--border); white-space: nowrap;
-    }
+    thead th { background: var(--surface2); padding: 12px 14px; font-size: 0.77rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); text-align: center; border-bottom: 1px solid var(--border); white-space: nowrap; }
     tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
     tbody tr:last-child { border-bottom: none; }
     tbody tr:hover { background: rgba(108,99,255,0.03); }
-    td { padding: 11px 14px; vertical-align: middle; text-align: center; }
+    td { padding: 11px 10px; vertical-align: middle; text-align: center; }
 
     .input-name { background: transparent; border: none; border-bottom: 1px solid var(--border); color: var(--text); font-family: inherit; font-size: 0.95rem; padding: 4px 0; width: 100%; outline: none; transition: border-color 0.2s; text-align: center; }
     .input-name:focus { border-color: var(--accent-light); }
@@ -78,20 +79,16 @@
     .input-name.dup { border-color: var(--yellow); color: var(--yellow); }
     .mobile-name-input.dup { border-color: var(--yellow); color: var(--yellow); }
 
-    /* 추가금액 입력 */
-    .extra-input-wrap { display: flex; align-items: center; gap: 4px; background: rgba(192,85,10,0.05); border: 1px solid rgba(192,85,10,0.2); border-radius: 7px; padding: 5px 9px; transition: border-color 0.2s; }
-    .extra-input-wrap:focus-within { border-color: var(--extra); background: rgba(192,85,10,0.08); }
-    .extra-input-wrap .extra-symbol { color: var(--extra); font-size: 0.82rem; opacity: 0.7; }
-    .extra-input { background: transparent; border: none; color: var(--extra); font-family: inherit; font-size: 0.88rem; font-weight: 600; width: 90px; text-align: right; outline: none; }
-    .extra-input::placeholder { color: rgba(192,85,10,0.35); font-weight: 400; font-size: 0.8rem; }
-
+    /* 3-way 세그먼트 탭 */
     .seg-wrap { display: inline-flex; border-radius: 8px; border: 1px solid var(--border); overflow: hidden; background: var(--surface2); }
-    .seg-btn { flex: 1; padding: 6px 16px; font-family: inherit; font-size: 0.85rem; font-weight: 700; border: none; background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
-    .seg-btn.active-basic { background: var(--green); color: #fff; }
-    .seg-btn.active-ot    { background: var(--accent); color: #fff; }
+    .seg-btn { flex: 1; padding: 6px 12px; font-family: inherit; font-size: 0.82rem; font-weight: 700; border: none; background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+    .seg-btn.active-basic   { background: var(--green);   color: #fff; }
+    .seg-btn.active-ot      { background: var(--accent);  color: #fff; }
+    .seg-btn.active-weekend { background: var(--weekend); color: #fff; }
 
-    .edu-cell { display: flex; align-items: center; justify-content: center; gap: 8px; }
-    .edu-trigger { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 10px; border-radius: 7px; border: 1px solid var(--border); background: var(--surface2); transition: border-color 0.15s, background 0.15s; min-width: 140px; justify-content: space-between; }
+    /* 교육날짜 트리거 */
+    .edu-cell { display: flex; align-items: center; justify-content: center; }
+    .edu-trigger { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 10px; border-radius: 7px; border: 1px solid var(--border); background: var(--surface2); transition: border-color 0.15s, background 0.15s; min-width: 130px; justify-content: space-between; }
     .edu-trigger:hover { border-color: var(--yellow); background: rgba(179,138,0,0.06); }
     .edu-trigger-inner { display: flex; flex-direction: column; gap: 2px; }
     .edu-trigger-text { font-size: 0.82rem; color: var(--muted); }
@@ -99,7 +96,7 @@
     .edu-trigger-dates { font-size: 0.72rem; color: var(--muted); line-height: 1.3; word-break: break-all; }
     .edu-trigger-icon { font-size: 0.85rem; opacity: .5; flex-shrink: 0; }
 
-    /* 달력 팝업 */
+    /* 팝업 달력 */
     .cal-popup-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 2000; align-items: center; justify-content: center; }
     .cal-popup-overlay.show { display: flex; }
     .cal-popup { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; width: min(360px, 92vw); box-shadow: 0 12px 40px rgba(0,0,0,0.18); }
@@ -109,15 +106,19 @@
     .cal-nav-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--text); font-size: 0.95rem; width: 30px; height: 30px; border-radius: 7px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
     .cal-nav-btn:hover { background: rgba(108,99,255,0.1); border-color: var(--accent-light); }
     .cal-dow-row { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-bottom: 4px; }
-    .cal-dow { font-size: 0.68rem; font-weight: 700; color: var(--muted); text-align: center; padding: 2px 0; text-transform: uppercase; }
+    .cal-dow { font-size: 0.68rem; font-weight: 700; color: var(--muted); text-align: center; padding: 2px 0; }
     .cal-dow:first-child { color: #e04040; }
     .cal-dow:last-child  { color: var(--accent-light); }
     .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
     .cal-day { aspect-ratio: 1; border-radius: 7px; border: 1px solid var(--border); background: var(--surface2); color: var(--text); font-size: 0.8rem; font-weight: 600; font-family: inherit; cursor: pointer; transition: all 0.12s; display: flex; align-items: center; justify-content: center; padding: 0; width: 100%; }
-    .cal-day:hover { border-color: var(--yellow); background: rgba(179,138,0,0.08); }
+    .cal-day:hover:not(.empty) { border-color: var(--yellow); background: rgba(179,138,0,0.08); }
     .cal-day.selected { background: var(--yellow); border-color: var(--yellow); color: #fff; }
     .cal-day.today { border-color: var(--accent-light); }
     .cal-day.empty { background: transparent; border-color: transparent; cursor: default; }
+    /* 팝업 내 일요일/토요일 색상 */
+    .cal-day.sun { color: #e04040; }
+    .cal-day.sat { color: var(--accent-light); }
+    .cal-day.selected.sun, .cal-day.selected.sat { color: #fff; }
     .cal-popup-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
     .cal-count-label { font-size: 0.82rem; color: var(--yellow); font-weight: 700; }
     .cal-count-label.empty { color: var(--muted); font-weight: 400; }
@@ -127,25 +128,29 @@
     .cal-btn-done { background: var(--accent); border: none; color: #fff; font-family: inherit; font-size: 0.8rem; font-weight: 700; padding: 5px 14px; border-radius: 7px; cursor: pointer; }
     .cal-btn-done:hover { background: var(--accent-light); }
 
+    /* 적용 단가 */
     .applied-rate { font-size: 0.85rem; white-space: nowrap; text-align: center; font-weight: 600; }
-    .applied-rate.basic { color: var(--green); }
-    .applied-rate.ot    { color: var(--accent-light); }
-    .applied-rate.none  { color: var(--muted); }
+    .applied-rate.basic   { color: var(--green); }
+    .applied-rate.ot      { color: var(--accent-light); }
+    .applied-rate.weekend { color: var(--weekend); }
+    .applied-rate.none    { color: var(--muted); }
 
-    /* 최종 금액 – 내역 포함 */
+    /* 최종 금액 */
     .result-cell { font-weight: 700; font-size: 0.98rem; color: var(--muted); white-space: nowrap; text-align: center; }
-    .result-cell.has-value { color: var(--green); }
-    .result-cell.ot-value  { color: var(--accent-light); }
-    .result-breakdown { font-size: 0.7rem; color: var(--muted); font-weight: 400; margin-top: 2px; white-space: nowrap; }
-    .result-breakdown .extra-part { color: var(--extra); font-weight: 600; }
+    .result-cell.has-basic   { color: var(--green); }
+    .result-cell.has-ot      { color: var(--accent-light); }
+    .result-cell.has-weekend { color: var(--weekend); }
 
+    /* 삭제 */
     .btn-del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; padding: 2px 6px; border-radius: 4px; transition: color 0.15s, background 0.15s; }
     .btn-del:hover { color: var(--danger); background: rgba(224,62,62,0.08); }
 
+    /* 행 추가 */
     .add-row-wrap { padding: 13px 14px; border-top: 1px solid var(--border); }
     .btn-add { background: none; border: 1px dashed var(--border); color: var(--muted); cursor: pointer; font-family: inherit; font-size: 0.88rem; padding: 7px 14px; border-radius: 6px; transition: all 0.15s; display: flex; align-items: center; gap: 6px; }
     .btn-add:hover { border-color: var(--accent); color: var(--accent-light); background: rgba(108,99,255,0.05); }
 
+    /* 합계 */
     .summary { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); max-width: 980px; margin: 16px auto 0; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
     .summary-left .label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; }
     .summary-left .sub { font-size: 0.88rem; color: var(--muted); margin-top: 4px; }
@@ -153,6 +158,7 @@
     .total-amount { font-size: 2rem; font-weight: 700; color: var(--green); letter-spacing: -1px; }
     .total-amount sup { font-size: 1rem; font-weight: 600; margin-right: 3px; vertical-align: super; }
 
+    /* 모달 */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000; align-items: center; justify-content: center; }
     .modal-overlay.show { display: flex; }
     .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px 32px; max-width: 340px; width: 90%; text-align: center; }
@@ -174,24 +180,17 @@
     .mobile-name-input::placeholder { color: var(--muted); font-weight: 400; }
     .mobile-card-body { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; }
     .mobile-field label { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; margin-bottom: 5px; }
-    .mobile-field.full { grid-column: 1 / -1; }
     .mobile-plta-row { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
     .mobile-plta-right { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
     .mobile-plta-rate-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
     .mobile-result { font-size: 1.05rem; font-weight: 700; color: var(--muted); }
-    .mobile-result.has-value { color: var(--green); }
-    .mobile-result.ot-value  { color: var(--accent-light); }
+    .mobile-result.has-basic   { color: var(--green); }
+    .mobile-result.has-ot      { color: var(--accent-light); }
+    .mobile-result.has-weekend { color: var(--weekend); }
     .mobile-rate { font-size: 0.85rem; font-weight: 600; color: var(--muted); }
-    .mobile-rate.basic { color: var(--green); }
-    .mobile-rate.ot    { color: var(--accent-light); }
-    /* 모바일 추가금액 */
-    .mobile-extra-wrap { display: flex; align-items: center; gap: 4px; background: rgba(192,85,10,0.05); border: 1px solid rgba(192,85,10,0.2); border-radius: 7px; padding: 6px 10px; transition: border-color 0.2s; }
-    .mobile-extra-wrap:focus-within { border-color: var(--extra); }
-    .mobile-extra-wrap .extra-symbol { color: var(--extra); font-size: 0.82rem; opacity: 0.7; }
-    .mobile-extra-input { background: transparent; border: none; color: var(--extra); font-family: inherit; font-size: 0.88rem; font-weight: 600; flex: 1; outline: none; }
-    .mobile-extra-input::placeholder { color: rgba(192,85,10,0.35); font-size: 0.8rem; }
-    .mobile-breakdown { font-size: 0.72rem; color: var(--muted); margin-top: 3px; }
-    .mobile-breakdown .extra-part { color: var(--extra); font-weight: 600; }
+    .mobile-rate.basic   { color: var(--green); }
+    .mobile-rate.ot      { color: var(--accent-light); }
+    .mobile-rate.weekend { color: var(--weekend); }
     .mobile-add-btn { width: 100%; background: none; border: 1px dashed var(--border); color: var(--muted); cursor: pointer; font-family: inherit; font-size: 0.88rem; padding: 12px; border-radius: var(--radius); transition: all 0.15s; margin-top: 4px; }
     .mobile-add-btn:hover { border-color: var(--accent); color: var(--accent-light); }
 
@@ -210,9 +209,10 @@
 
 <header>
   <h1>💰 월급 <span>계산기</span></h1>
-  <p>단가를 설정하고 직원별 플타 여부와 교육 날짜를 입력하세요</p>
+  <p>단가를 설정하고 직원별 교육 유형과 날짜를 입력하세요</p>
 </header>
 
+<!-- 월 선택기 -->
 <div class="month-bar">
   <div class="month-nav">
     <button class="month-nav-btn" onclick="changeMonth(-1)">‹</button>
@@ -222,16 +222,18 @@
   <div class="month-saved-list" id="monthChips"></div>
 </div>
 
+<!-- 툴바 -->
 <div class="toolbar">
   <button class="btn-tool save"  onclick="saveData()">💾 저장</button>
   <button class="btn-tool excel" onclick="exportExcel()">📊 엑셀 내보내기</button>
   <button class="btn-tool reset" onclick="openResetModal()">🗑 초기화</button>
 </div>
 
+<!-- 단가 패널 -->
 <div class="rate-panel">
   <div class="panel-title">단가 설정</div>
   <div class="rate-group">
-    <div class="rate-label"><span class="rate-badge basic">기본</span>기본 단가 (회당)</div>
+    <div class="rate-label"><span class="rate-badge basic">기본</span>기본 단가</div>
     <div class="rate-input-wrap">
       <span>₩</span>
       <input class="rate-input" id="rateBasic" type="text" inputmode="numeric" placeholder="0" oninput="onRateInput('basic', this.value)" />
@@ -239,10 +241,18 @@
     </div>
   </div>
   <div class="rate-group">
-    <div class="rate-label"><span class="rate-badge ot">플타</span>플타 단가 (회당)</div>
+    <div class="rate-label"><span class="rate-badge ot">플타</span>플타 단가</div>
     <div class="rate-input-wrap">
       <span>₩</span>
       <input class="rate-input" id="rateOT" type="text" inputmode="numeric" placeholder="0" oninput="onRateInput('ot', this.value)" />
+      <span class="rate-unit">/ 회</span>
+    </div>
+  </div>
+  <div class="rate-group">
+    <div class="rate-label"><span class="rate-badge weekend">주말</span>주말 단가</div>
+    <div class="rate-input-wrap">
+      <span>₩</span>
+      <input class="rate-input" id="rateWeekend" type="text" inputmode="numeric" placeholder="0" oninput="onRateInput('weekend', this.value)" />
       <span class="rate-unit">/ 회</span>
     </div>
   </div>
@@ -253,12 +263,11 @@
   <table>
     <thead>
       <tr>
-        <th style="width:10%">이름</th>
-        <th style="width:8%">교육선택</th>
-        <th style="width:32%">교육 날짜 <span style="font-weight:400;opacity:.5;font-size:0.72rem">(날짜 클릭으로 선택)</span></th>
-        <th style="width:14%">추가금액 <span style="font-weight:400;opacity:.5;font-size:0.72rem">₊α</span></th>
-        <th style="width:12%">적용 단가</th>
-        <th style="width:19%">최종 금액</th>
+        <th style="width:11%">이름</th>
+        <th style="width:18%">교육 유형</th>
+        <th style="width:38%">교육 날짜 <span style="font-weight:400;opacity:.5;font-size:0.72rem">(날짜 클릭으로 선택)</span></th>
+        <th style="width:14%">적용 단가</th>
+        <th style="width:14%">최종 금액</th>
         <th style="width:5%"></th>
       </tr>
     </thead>
@@ -269,14 +278,15 @@
   </div>
 </div>
 
-<!-- 모바일 -->
+<!-- 모바일 카드 리스트 -->
 <div class="mobile-list" id="mobileList"></div>
 <button class="mobile-add-btn" id="mobileAddBtn" style="display:none;max-width:980px;margin:0 auto;" onclick="addRow()">＋ 아이 추가</button>
 
+<!-- 합계 -->
 <div class="summary">
   <div class="summary-left">
     <div class="label">총 합계</div>
-    <div class="sub">아이 <span id="empCount">0</span>명 · 플타 <span id="otCount">0</span>명 · 총 교육 <span id="eduTotal">0</span>회</div>
+    <div class="sub">아이 <span id="empCount">0</span>명 · 플타 <span id="otCount">0</span>명 · 주말 <span id="wkCount">0</span>명 · 총 교육 <span id="eduTotal">0</span>회</div>
   </div>
   <div class="total-amount"><sup>₩</sup><span id="totalDisplay">0</span></div>
 </div>
@@ -290,8 +300,10 @@
       <button class="cal-nav-btn" onclick="calNavMonth(1)">›</button>
     </div>
     <div class="cal-dow-row">
-      <div class="cal-dow">일</div><div class="cal-dow">월</div><div class="cal-dow">화</div>
-      <div class="cal-dow">수</div><div class="cal-dow">목</div><div class="cal-dow">금</div><div class="cal-dow">토</div>
+      <div class="cal-dow" style="color:#e04040">일</div>
+      <div class="cal-dow">월</div><div class="cal-dow">화</div>
+      <div class="cal-dow">수</div><div class="cal-dow">목</div><div class="cal-dow">금</div>
+      <div class="cal-dow" style="color:var(--accent-light)">토</div>
     </div>
     <div class="cal-grid" id="calPopupGrid"></div>
     <div class="cal-popup-footer">
@@ -319,12 +331,20 @@
 
 <script>
   const STORAGE_PREFIX = 'slp_salary_';
-  let rateBasic = 0, rateOT = 0;
+  let rateBasic = 0, rateOT = 0, rateWeekend = 0;
   let rows = [], idCounter = 0;
 
+  // 현재 연/월
   const _now = new Date();
   let curYear  = _now.getFullYear();
   let curMonth = _now.getMonth() + 1;
+
+  // type: 'basic' | 'ot' | 'weekend'
+  function getRate(type) {
+    if (type === 'ot') return rateOT;
+    if (type === 'weekend') return rateWeekend;
+    return rateBasic;
+  }
 
   function monthKey(y, m) { return `${STORAGE_PREFIX}${y}_${String(m).padStart(2,'0')}`; }
   function curKey()        { return monthKey(curYear, curMonth); }
@@ -338,7 +358,7 @@
       if (k && k.startsWith(STORAGE_PREFIX)) {
         const part = k.replace(STORAGE_PREFIX,'');
         const [y, m] = part.split('_').map(Number);
-        if (y && m) chips.push({y, m, key: k});
+        if (y && m) chips.push({y, m});
       }
     }
     chips.sort((a,b)=> a.y!==b.y ? a.y-b.y : a.m-b.m);
@@ -360,7 +380,6 @@
     if (curMonth < 1)  { curMonth = 12; curYear--; }
     loadMonth();
   }
-
   function switchMonth(y, m) { curYear = y; curMonth = m; loadMonth(); }
 
   function loadMonth() {
@@ -371,27 +390,28 @@
     if (saved) {
       try {
         const data = JSON.parse(saved);
-        rateBasic = data.rateBasic || 0;
-        rateOT    = data.rateOT    || 0;
-        document.getElementById('rateBasic').value = rateBasic || '';
-        document.getElementById('rateOT').value    = rateOT    || '';
+        rateBasic   = data.rateBasic   || 0;
+        rateOT      = data.rateOT      || 0;
+        rateWeekend = data.rateWeekend || 0;
+        document.getElementById('rateBasic').value   = rateBasic   || '';
+        document.getElementById('rateOT').value      = rateOT      || '';
+        document.getElementById('rateWeekend').value = rateWeekend || '';
         if (data.rows && data.rows.length > 0) {
           data.rows.forEach(r => {
             const id = idCounter++;
-            rows.push({ id, name: r.name||'', overtime: !!r.overtime, eduDates: r.eduDates||'', extraAmt: r.extraAmt||0 });
+            rows.push({ id, name: r.name||'', type: r.type||'basic', eduDates: r.eduDates||'' });
             appendRowDOM(id);
             updateTrigger(id);
           });
-          checkMobileBtn();
-          renderMonthBar();
-          calcTotal();
+          checkMobileBtn(); renderMonthBar(); calcTotal();
           return;
         }
       } catch(e) {}
     }
-    rateBasic = 0; rateOT = 0;
-    document.getElementById('rateBasic').value = '';
-    document.getElementById('rateOT').value    = '';
+    rateBasic = 0; rateOT = 0; rateWeekend = 0;
+    document.getElementById('rateBasic').value   = '';
+    document.getElementById('rateOT').value      = '';
+    document.getElementById('rateWeekend').value = '';
     addRow();
     renderMonthBar();
   }
@@ -400,8 +420,8 @@
 
   function saveData() {
     localStorage.setItem(curKey(), JSON.stringify({
-      rateBasic, rateOT,
-      rows: rows.map(r => ({ name: r.name, overtime: r.overtime, eduDates: r.eduDates, extraAmt: r.extraAmt }))
+      rateBasic, rateOT, rateWeekend,
+      rows: rows.map(r => ({ name: r.name, type: r.type, eduDates: r.eduDates }))
     }));
     renderMonthBar();
     showToast(`✅ ${monthLabel(curYear,curMonth)} 저장 완료`);
@@ -412,9 +432,11 @@
   function confirmReset() {
     closeResetModal();
     localStorage.removeItem(curKey());
-    rows = []; idCounter = 0; rateBasic = 0; rateOT = 0;
-    document.getElementById('rateBasic').value = '';
-    document.getElementById('rateOT').value = '';
+    rows = []; idCounter = 0;
+    rateBasic = 0; rateOT = 0; rateWeekend = 0;
+    document.getElementById('rateBasic').value   = '';
+    document.getElementById('rateOT').value      = '';
+    document.getElementById('rateWeekend').value = '';
     document.getElementById('tableBody').innerHTML = '';
     document.getElementById('mobileList').innerHTML = '';
     addRow();
@@ -426,19 +448,18 @@
     const ym = monthLabel(curYear, curMonth);
     const validRows = rows.filter(r => r.name && r.name.trim() !== '');
     let csv = '\uFEFF';
-    csv += `월급 계산서 (${ym})\n\n기본 단가,${rateBasic}원\n플타 단가,${rateOT}원\n\n`;
-    csv += `이름,플타,교육날짜,교육횟수,적용단가,교육금액,추가금액,최종금액\n`;
+    csv += `월급 계산서 (${ym})\n\n기본 단가,${rateBasic}원\n플타 단가,${rateOT}원\n주말 단가,${rateWeekend}원\n\n`;
+    csv += `이름,유형,교육날짜,교육횟수,적용단가,최종금액\n`;
     validRows.forEach(r => {
-      const count = countEdu(r.eduDates), rate = r.overtime ? rateOT : rateBasic;
-      const eduAmt = count * rate;
-      const extra = r.extraAmt || 0;
+      const count = countEdu(r.eduDates);
+      const rate  = getRate(r.type);
+      const typeLabel = r.type==='ot'?'플타':r.type==='weekend'?'주말':'기본';
       const datesCell = r.eduDates ? `"${r.eduDates}"` : '–';
-      csv += `${r.name},${r.overtime?'플타':'기본'},${datesCell},${count}회,${rate}원,${eduAmt}원,${extra}원,${eduAmt+extra}원\n`;
+      csv += `${r.name},${typeLabel},${datesCell},${count}회,${rate}원,${count*rate}원\n`;
     });
     const totalAll = validRows.reduce((s,r)=>s+calcRow(r),0);
     const eduAll   = validRows.reduce((s,r)=>s+countEdu(r.eduDates),0);
-    const extraAll = validRows.reduce((s,r)=>s+(r.extraAmt||0),0);
-    csv += `\n합계,,,${eduAll}회,,,${extraAll}원,${totalAll}원\n`;
+    csv += `\n합계,,,${eduAll}회,,${totalAll}원\n`;
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
     a.download = `월급계산서_${curYear}${String(curMonth).padStart(2,'0')}.csv`;
@@ -456,13 +477,15 @@
 
   function onRateInput(type, val) {
     const num = parseInt(val.replace(/[^0-9]/g,''),10)||0;
-    if (type==='basic') rateBasic=num; else rateOT=num;
+    if (type==='basic') rateBasic=num;
+    else if (type==='ot') rateOT=num;
+    else rateWeekend=num;
     refreshAllResults();
   }
 
   function addRow() {
     const id = idCounter++;
-    rows.push({ id, name:'', overtime:false, eduDates:'', extraAmt:0 });
+    rows.push({ id, name:'', type:'basic', eduDates:'' });
     appendRowDOM(id);
     setTimeout(()=>{ const el=document.getElementById('name-'+id); if(el)el.focus(); },30);
   }
@@ -488,25 +511,28 @@
   }
   window.addEventListener('resize', checkMobileBtn);
 
-  // ── PC 행 HTML ──
+  function buildSegHTML(id, type, prefix) {
+    const b = type==='basic'   ? ' active-basic'   : '';
+    const o = type==='ot'      ? ' active-ot'      : '';
+    const w = type==='weekend' ? ' active-weekend'  : '';
+    return `
+      <div class="seg-wrap" id="${prefix}seg-${id}">
+        <button class="seg-btn${b}" onclick="setType(${id},'basic')">기본</button>
+        <button class="seg-btn${o}" onclick="setType(${id},'ot')">플타</button>
+        <button class="seg-btn${w}" onclick="setType(${id},'weekend')">주말</button>
+      </div>`;
+  }
+
   function buildRowHTML(id) {
     const row = rows.find(r=>r.id===id);
     const count = countEdu(row.eduDates);
-    const rate  = row.overtime ? rateOT : rateBasic;
+    const rate  = getRate(row.type);
     const total = calcRow(row);
-    const eduAmt = count * rate;
-    const extra = row.extraAmt || 0;
-    const rateClass   = !rate ? 'none' : row.overtime ? 'ot' : 'basic';
-    const resultClass = total>0 ? (row.overtime?'ot-value':'has-value') : '';
-    const breakdownHtml = buildBreakdown(eduAmt, extra);
+    const rateClass   = rate ? row.type : 'none';
+    const resultClass = total > 0 ? 'has-'+row.type : '';
     return `
       <td><input class="input-name" id="name-${id}" type="text" placeholder="이름" value="${esc(row.name)}" oninput="updateField(${id},'name',this.value)" /></td>
-      <td>
-        <div class="seg-wrap">
-          <button class="seg-btn ${!row.overtime?'active-basic':''}" onclick="setOvertime(${id},false)">기본</button>
-          <button class="seg-btn ${row.overtime?'active-ot':''}"    onclick="setOvertime(${id},true)">플타</button>
-        </div>
-      </td>
+      <td>${buildSegHTML(id, row.type, '')}</td>
       <td>
         <div class="edu-cell">
           <div class="edu-trigger" onclick="openCalPopup(${id})" id="trigger-${id}">
@@ -518,33 +544,18 @@
           </div>
         </div>
       </td>
-      <td>
-        <div class="extra-input-wrap">
-          <span class="extra-symbol">₊</span>
-          <input class="extra-input" id="extra-${id}" type="text" inputmode="numeric"
-            placeholder="0" value="${extra||''}"
-            oninput="updateExtra(${id}, this.value)" />
-        </div>
-      </td>
       <td class="applied-rate ${rateClass}" id="rate-${id}">${rate?'₩'+fmt(rate)+'/회':'–'}</td>
-      <td class="result-cell ${resultClass}" id="result-${id}">
-        ${total>0?'₩'+fmt(total):'–'}
-        <div class="result-breakdown" id="breakdown-${id}">${breakdownHtml}</div>
-      </td>
+      <td class="result-cell ${resultClass}" id="result-${id}">${total>0?'₩'+fmt(total):'–'}</td>
       <td><button class="btn-del" onclick="removeRow(${id})" title="삭제">✕</button></td>`;
   }
 
-  // ── 모바일 카드 HTML ──
   function buildMobileCardHTML(id) {
     const row = rows.find(r=>r.id===id);
     const count = countEdu(row.eduDates);
-    const rate  = row.overtime ? rateOT : rateBasic;
+    const rate  = getRate(row.type);
     const total = calcRow(row);
-    const eduAmt = count * rate;
-    const extra = row.extraAmt || 0;
-    const rateClass   = !rate ? '' : row.overtime ? 'ot' : 'basic';
-    const resultClass = total>0 ? (row.overtime?'ot-value':'has-value') : '';
-    const breakdownHtml = buildBreakdown(eduAmt, extra);
+    const rateClass   = rate ? row.type : '';
+    const resultClass = total > 0 ? 'has-'+row.type : '';
     return `
       <div class="mobile-card-top">
         <input class="mobile-name-input" id="mname-${id}" type="text" placeholder="이름 입력" value="${esc(row.name)}" oninput="updateField(${id},'name',this.value)" />
@@ -552,10 +563,7 @@
       </div>
       <div class="mobile-card-body">
         <div class="mobile-plta-row">
-          <div class="seg-wrap" style="flex:1">
-            <button class="seg-btn ${!row.overtime?'active-basic':''}" onclick="setOvertime(${id},false)" id="mseg-basic-${id}">기본</button>
-            <button class="seg-btn ${row.overtime?'active-ot':''}"    onclick="setOvertime(${id},true)"  id="mseg-ot-${id}">플타</button>
-          </div>
+          ${buildSegHTML(id, row.type, 'm')}
           <div class="mobile-plta-right">
             <span class="mobile-plta-rate-label">적용 단가</span>
             <div class="mobile-rate ${rateClass}" id="mrate-${id}">${rate?'₩'+fmt(rate)+'/회':'–'}</div>
@@ -572,48 +580,15 @@
           </div>
         </div>
         <div class="mobile-field" style="grid-column:1/-1">
-          <label>추가금액 ₊α</label>
-          <div class="mobile-extra-wrap">
-            <span class="extra-symbol">₊</span>
-            <input class="mobile-extra-input" id="mextra-${id}" type="text" inputmode="numeric"
-              placeholder="추가 금액 입력" value="${extra||''}"
-              oninput="updateExtra(${id}, this.value)" />
-          </div>
-        </div>
-        <div class="mobile-field" style="grid-column:1/-1">
           <label>최종 금액</label>
           <div class="mobile-result ${resultClass}" id="mresult-${id}">${total>0?'₩ '+fmt(total):'–'}</div>
-          <div class="mobile-breakdown" id="mbreakdown-${id}">${breakdownHtml}</div>
         </div>
       </div>`;
   }
 
-  // 교육금액 + 추가금액 내역 텍스트
-  function buildBreakdown(eduAmt, extra) {
-    if (eduAmt === 0 && extra === 0) return '';
-    const parts = [];
-    if (eduAmt > 0) parts.push(`교육 ₩${fmt(eduAmt)}`);
-    if (extra > 0)  parts.push(`<span class="extra-part">추가 ₊₩${fmt(extra)}</span>`);
-    return parts.join(' + ');
-  }
-
-  // ── 추가금액 업데이트 ──
-  function updateExtra(id, val) {
-    const row = rows.find(r=>r.id===id); if(!row) return;
-    const num = parseInt(String(val).replace(/[^0-9]/g,''),10)||0;
-    row.extraAmt = num;
-    // PC/모바일 입력란 동기화
-    const pcEl = document.getElementById('extra-'+id);
-    const mbEl = document.getElementById('mextra-'+id);
-    if (pcEl && document.activeElement !== pcEl) pcEl.value = num || '';
-    if (mbEl && document.activeElement !== mbEl) mbEl.value = num || '';
-    updateResultCell(id);
-    calcTotal();
-  }
-
-  // ══════════════════════
+  // ══════════════════════════════════════
   // 팝업 달력
-  // ══════════════════════
+  // ══════════════════════════════════════
   let calActiveId = null, calYear = 0, calMonth = 0;
   let calSelected = new Set();
 
@@ -670,14 +645,17 @@
     const grid = document.getElementById('calPopupGrid');
     grid.innerHTML = '';
     for (let i = 0; i < firstDay; i++) {
-      const blank = document.createElement('div');
-      blank.className = 'cal-day empty';
-      grid.appendChild(blank);
+      const blank = document.createElement('div'); blank.className = 'cal-day empty'; grid.appendChild(blank);
     }
     for (let d = 1; d <= daysInMonth; d++) {
+      const dow = new Date(calYear, calMonth, d).getDay(); // 0=일, 6=토
       const btn = document.createElement('button');
-      btn.className = 'cal-day' + (calSelected.has(d) ? ' selected' : '');
-      if (d === today.getDate() && calMonth === today.getMonth() && calYear === today.getFullYear()) btn.classList.add('today');
+      let cls = 'cal-day';
+      if (calSelected.has(d)) cls += ' selected';
+      if (dow === 0) cls += ' sun';
+      if (dow === 6) cls += ' sat';
+      if (d === today.getDate() && calMonth === today.getMonth() && calYear === today.getFullYear()) cls += ' today';
+      btn.className = cls;
       btn.textContent = d;
       btn.onclick = () => calToggleDay(d);
       grid.appendChild(btn);
@@ -688,7 +666,8 @@
   function calToggleDay(d) {
     if (calSelected.has(d)) calSelected.delete(d); else calSelected.add(d);
     document.getElementById('calPopupGrid').querySelectorAll('.cal-day:not(.empty)').forEach(btn => {
-      btn.classList.toggle('selected', calSelected.has(parseInt(btn.textContent,10)));
+      const day = parseInt(btn.textContent, 10);
+      btn.classList.toggle('selected', calSelected.has(day));
     });
     updateCalFooter();
   }
@@ -711,34 +690,42 @@
     const cnt = countEdu(row.eduDates);
     const txt = cnt > 0 ? cnt+'일 선택됨' : '날짜 선택';
     const cls = 'edu-trigger-text' + (cnt > 0 ? ' has-days' : '');
-    ['trigtext-'+id, 'mtrigtext-'+id].forEach(elId => {
-      const el = document.getElementById(elId); if(!el) return;
-      el.textContent = txt; el.className = cls;
+    ['trigtext-'+id,'mtrigtext-'+id].forEach(elId => {
+      const el=document.getElementById(elId); if(!el) return; el.textContent=txt; el.className=cls;
     });
     const datesTxt = cnt > 0 ? row.eduDates : '';
-    ['trigdates-'+id, 'mtrigdates-'+id].forEach(elId => {
-      const el = document.getElementById(elId); if(!el) return;
-      el.textContent = datesTxt;
+    ['trigdates-'+id,'mtrigdates-'+id].forEach(elId => {
+      const el=document.getElementById(elId); if(!el) return; el.textContent=datesTxt;
     });
   }
 
-  function setOvertime(id, value) {
+  // ── 유형 세그먼트 전환 ──
+  function setType(id, type) {
     const row = rows.find(r=>r.id===id); if(!row) return;
-    row.overtime = value;
-    const pcRow = document.getElementById('row-'+id);
-    if (pcRow) {
-      pcRow.querySelectorAll('.seg-btn').forEach(btn => {
+    row.type = type;
+    // PC 탭
+    const pcSeg = document.getElementById('seg-'+id);
+    if (pcSeg) {
+      pcSeg.querySelectorAll('.seg-btn').forEach((btn,i) => {
         btn.className = 'seg-btn';
-        if (btn.textContent==='기본' && !value) btn.classList.add('active-basic');
-        if (btn.textContent==='플타'  &&  value) btn.classList.add('active-ot');
+        if (i===0 && type==='basic')   btn.classList.add('active-basic');
+        if (i===1 && type==='ot')      btn.classList.add('active-ot');
+        if (i===2 && type==='weekend') btn.classList.add('active-weekend');
       });
     }
-    const mb = document.getElementById('mseg-basic-'+id);
-    const mo = document.getElementById('mseg-ot-'+id);
-    if (mb) mb.className = 'seg-btn' + (!value ? ' active-basic' : '');
-    if (mo) mo.className = 'seg-btn' + ( value ? ' active-ot'    : '');
+    // 모바일 탭
+    const mbSeg = document.getElementById('mseg-'+id);
+    if (mbSeg) {
+      mbSeg.querySelectorAll('.seg-btn').forEach((btn,i) => {
+        btn.className = 'seg-btn';
+        if (i===0 && type==='basic')   btn.classList.add('active-basic');
+        if (i===1 && type==='ot')      btn.classList.add('active-ot');
+        if (i===2 && type==='weekend') btn.classList.add('active-weekend');
+      });
+    }
     updateRateCell(id);
-    updateResultCell(id); calcTotal();
+    updateResultCell(id);
+    calcTotal();
   }
 
   function updateField(id, field, value) {
@@ -754,73 +741,65 @@
   }
 
   function updateRateCell(id) {
-    const row=rows.find(r=>r.id===id);
-    const rate=row.overtime?rateOT:rateBasic;
-    const rc=!rate?'none':row.overtime?'ot':'basic';
-    const txt=rate?'₩'+fmt(rate)+'/회':'–';
-    const el=document.getElementById('rate-'+id); if(el){el.className='applied-rate '+rc;el.textContent=txt;}
-    const mel=document.getElementById('mrate-'+id); if(mel){mel.className='mobile-rate '+rc;mel.textContent=txt;}
+    const row = rows.find(r=>r.id===id);
+    const rate = getRate(row.type);
+    const rc = rate ? row.type : 'none';
+    const txt = rate ? '₩'+fmt(rate)+'/회' : '–';
+    const el  = document.getElementById('rate-'+id);
+    if(el) { el.className='applied-rate '+rc; el.textContent=txt; }
+    const mel = document.getElementById('mrate-'+id);
+    if(mel) { mel.className='mobile-rate '+rc; mel.textContent=txt; }
   }
 
   function updateResultCell(id) {
-    const row=rows.find(r=>r.id===id);
-    const total=calcRow(row);
-    const count=countEdu(row.eduDates);
-    const rate=row.overtime?rateOT:rateBasic;
-    const eduAmt=count*rate;
-    const extra=row.extraAmt||0;
-    const rc=total>0?(row.overtime?'ot-value':'has-value'):'';
-    const bdHtml=buildBreakdown(eduAmt,extra);
-
-    const el=document.getElementById('result-'+id);
-    if(el){
-      el.className='result-cell '+rc;
-      el.innerHTML=(total>0?'₩'+fmt(total):'–')+'<div class="result-breakdown" id="breakdown-'+id+'">'+bdHtml+'</div>';
-    }
-    const mel=document.getElementById('mresult-'+id);
-    if(mel){mel.className='mobile-result '+rc;mel.textContent=total>0?'₩ '+fmt(total):'–';}
-    const mbd=document.getElementById('mbreakdown-'+id);
-    if(mbd){mbd.innerHTML=bdHtml;}
+    const row   = rows.find(r=>r.id===id);
+    const total = calcRow(row);
+    const rc    = total > 0 ? 'has-'+row.type : '';
+    const el    = document.getElementById('result-'+id);
+    if(el) { el.className='result-cell '+rc; el.textContent=total>0?'₩'+fmt(total):'–'; }
+    const mel   = document.getElementById('mresult-'+id);
+    if(mel) { mel.className='mobile-result '+rc; mel.textContent=total>0?'₩ '+fmt(total):'–'; }
     updateRateCell(id);
   }
 
   function refreshAllResults() { rows.forEach(r=>updateResultCell(r.id)); calcTotal(); }
 
   function removeRow(id) {
-    rows=rows.filter(r=>r.id!==id);
-    const tr=document.getElementById('row-'+id); if(tr)tr.remove();
-    const mc=document.getElementById('mcard-'+id); if(mc)mc.remove();
+    rows = rows.filter(r=>r.id!==id);
+    const tr=document.getElementById('row-'+id); if(tr) tr.remove();
+    const mc=document.getElementById('mcard-'+id); if(mc) mc.remove();
     calcTotal();
   }
 
   function checkDuplicateNames() {
     const nameCount = {};
-    rows.forEach(r => { const n = r.name.trim(); if(n) nameCount[n]=(nameCount[n]||0)+1; });
+    rows.forEach(r => { const n=r.name.trim(); if(n) nameCount[n]=(nameCount[n]||0)+1; });
     rows.forEach(r => {
       const isDup = r.name.trim() && nameCount[r.name.trim()] > 1;
       const pc=document.getElementById('name-'+r.id);
       const mb=document.getElementById('mname-'+r.id);
-      if(pc) pc.classList.toggle('dup',isDup);
-      if(mb) mb.classList.toggle('dup',isDup);
+      if(pc) pc.classList.toggle('dup', isDup);
+      if(mb) mb.classList.toggle('dup', isDup);
     });
   }
 
   function countEdu(str) { return getSelectedDays(str).size; }
-  function calcRow(row) { return countEdu(row.eduDates)*(row.overtime?rateOT:rateBasic) + (row.extraAmt||0); }
+  function calcRow(row)  { return countEdu(row.eduDates) * getRate(row.type); }
 
   function calcTotal() {
-    const total=rows.reduce((s,r)=>s+calcRow(r),0);
-    document.getElementById('totalDisplay').textContent=fmt(total);
+    const total = rows.reduce((s,r)=>s+calcRow(r), 0);
+    document.getElementById('totalDisplay').textContent = fmt(total);
     const uniqueNames = new Set(rows.map(r=>r.name.trim()).filter(n=>n!==''));
-    document.getElementById('empCount').textContent=uniqueNames.size;
-    document.getElementById('otCount').textContent=rows.filter(r=>r.overtime).length;
-    document.getElementById('eduTotal').textContent=rows.reduce((s,r)=>s+countEdu(r.eduDates),0);
+    document.getElementById('empCount').textContent = uniqueNames.size;
+    document.getElementById('otCount').textContent  = rows.filter(r=>r.type==='ot').length;
+    document.getElementById('wkCount').textContent  = rows.filter(r=>r.type==='weekend').length;
+    document.getElementById('eduTotal').textContent = rows.reduce((s,r)=>s+countEdu(r.eduDates),0);
   }
 
-  function fmt(n){return(n||0).toLocaleString('ko-KR');}
-  function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function fmt(n) { return (n||0).toLocaleString('ko-KR'); }
+  function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-  document.getElementById('resetModal').addEventListener('click',function(e){if(e.target===this)closeResetModal();});
+  document.getElementById('resetModal').addEventListener('click', function(e){ if(e.target===this) closeResetModal(); });
 </script>
 </body>
 </html>

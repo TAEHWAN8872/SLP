@@ -22,7 +22,6 @@
     header h1 span { color: var(--accent-light); }
     header p { color: var(--muted); margin-top: 6px; font-size: 0.92rem; }
 
-    /* 월 선택기 */
     .month-bar { max-width: 980px; margin: 0 auto 12px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .month-nav { display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: 9px; padding: 6px 10px; }
     .month-nav-btn { background: none; border: none; font-size: 1rem; cursor: pointer; color: var(--muted); padding: 0 4px; line-height: 1; transition: color 0.15s; }
@@ -34,7 +33,6 @@
     .month-chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
     .month-chip.has-data { border-color: rgba(108,99,255,0.4); color: var(--accent-light); background: rgba(108,99,255,0.07); }
 
-    /* 툴바 */
     .toolbar { max-width: 980px; margin: 0 auto 14px; display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
     .btn-tool { display: flex; align-items: center; gap: 6px; font-family: inherit; font-size: 0.84rem; font-weight: 600; padding: 8px 16px; border-radius: 7px; cursor: pointer; border: 1px solid var(--border); transition: all 0.15s; }
     .btn-tool.save  { background: rgba(108,99,255,0.10); color: var(--accent-light); border-color: rgba(108,99,255,0.3); }
@@ -44,11 +42,9 @@
     .btn-tool.reset { background: rgba(224,62,62,0.07); color: var(--danger); border-color: rgba(224,62,62,0.25); }
     .btn-tool.reset:hover { background: rgba(224,62,62,0.15); }
 
-    /* 토스트 */
     .save-toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px); background: #1e2133; border: 1px solid #333; color: #fff; font-size: 0.88rem; padding: 10px 20px; border-radius: 30px; opacity: 0; transition: opacity 0.3s, transform 0.3s; pointer-events: none; white-space: nowrap; z-index: 999; }
     .save-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* 단가 패널 */
     .rate-panel { max-width: 980px; margin: 0 auto 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 24px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
     .rate-panel .panel-title { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; white-space: nowrap; }
     .rate-group { display: flex; align-items: center; gap: 10px; }
@@ -64,7 +60,6 @@
     .rate-input::placeholder { color: var(--muted); font-weight: 400; }
     .rate-unit { font-size: 0.78rem; color: var(--muted); margin-left: 2px; }
 
-    /* PC 테이블 */
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; max-width: 980px; margin: 0 auto; }
     table { width: 100%; border-collapse: collapse; }
     thead th { background: var(--surface2); padding: 12px 14px; font-size: 0.77rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); text-align: center; border-bottom: 1px solid var(--border); white-space: nowrap; }
@@ -79,14 +74,12 @@
     .input-name.dup { border-color: var(--yellow); color: var(--yellow); }
     .mobile-name-input.dup { border-color: var(--yellow); color: var(--yellow); }
 
-    /* 3-way 세그먼트 탭 */
     .seg-wrap { display: inline-flex; border-radius: 8px; border: 1px solid var(--border); overflow: hidden; background: var(--surface2); }
     .seg-btn { flex: 1; padding: 6px 12px; font-family: inherit; font-size: 0.82rem; font-weight: 700; border: none; background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
     .seg-btn.active-basic   { background: var(--green);   color: #fff; }
     .seg-btn.active-ot      { background: var(--accent);  color: #fff; }
     .seg-btn.active-weekend { background: var(--weekend); color: #fff; }
 
-    /* 교육날짜 트리거 */
     .edu-cell { display: flex; align-items: center; justify-content: center; }
     .edu-trigger { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 10px; border-radius: 7px; border: 1px solid var(--border); background: var(--surface2); transition: border-color 0.15s, background 0.15s; min-width: 130px; justify-content: space-between; }
     .edu-trigger:hover { border-color: var(--yellow); background: rgba(179,138,0,0.06); }
@@ -96,7 +89,6 @@
     .edu-trigger-dates { font-size: 0.72rem; color: var(--muted); line-height: 1.3; word-break: break-all; }
     .edu-trigger-icon { font-size: 0.85rem; opacity: .5; flex-shrink: 0; }
 
-    /* 팝업 달력 */
     .cal-popup-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 2000; align-items: center; justify-content: center; }
     .cal-popup-overlay.show { display: flex; }
     .cal-popup { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; width: min(360px, 92vw); box-shadow: 0 12px 40px rgba(0,0,0,0.18); }
@@ -115,7 +107,6 @@
     .cal-day.selected { background: var(--yellow); border-color: var(--yellow); color: #fff; }
     .cal-day.today { border-color: var(--accent-light); }
     .cal-day.empty { background: transparent; border-color: transparent; cursor: default; }
-    /* 팝업 내 일요일/토요일 색상 */
     .cal-day.sun { color: #e04040; }
     .cal-day.sat { color: var(--accent-light); }
     .cal-day.selected.sun, .cal-day.selected.sat { color: #fff; }
@@ -128,29 +119,24 @@
     .cal-btn-done { background: var(--accent); border: none; color: #fff; font-family: inherit; font-size: 0.8rem; font-weight: 700; padding: 5px 14px; border-radius: 7px; cursor: pointer; }
     .cal-btn-done:hover { background: var(--accent-light); }
 
-    /* 적용 단가 */
     .applied-rate { font-size: 0.85rem; white-space: nowrap; text-align: center; font-weight: 600; }
     .applied-rate.basic   { color: var(--green); }
     .applied-rate.ot      { color: var(--accent-light); }
     .applied-rate.weekend { color: var(--weekend); }
     .applied-rate.none    { color: var(--muted); }
 
-    /* 최종 금액 */
     .result-cell { font-weight: 700; font-size: 0.98rem; color: var(--muted); white-space: nowrap; text-align: center; }
     .result-cell.has-basic   { color: var(--green); }
     .result-cell.has-ot      { color: var(--accent-light); }
     .result-cell.has-weekend { color: var(--weekend); }
 
-    /* 삭제 */
     .btn-del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; padding: 2px 6px; border-radius: 4px; transition: color 0.15s, background 0.15s; }
     .btn-del:hover { color: var(--danger); background: rgba(224,62,62,0.08); }
 
-    /* 행 추가 */
     .add-row-wrap { padding: 13px 14px; border-top: 1px solid var(--border); }
     .btn-add { background: none; border: 1px dashed var(--border); color: var(--muted); cursor: pointer; font-family: inherit; font-size: 0.88rem; padding: 7px 14px; border-radius: 6px; transition: all 0.15s; display: flex; align-items: center; gap: 6px; }
     .btn-add:hover { border-color: var(--accent); color: var(--accent-light); background: rgba(108,99,255,0.05); }
 
-    /* 합계 */
     .summary { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); max-width: 980px; margin: 16px auto 0; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
     .summary-left .label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; }
     .summary-left .sub { font-size: 0.88rem; color: var(--muted); margin-top: 4px; }
@@ -158,7 +144,54 @@
     .total-amount { font-size: 2rem; font-weight: 700; color: var(--green); letter-spacing: -1px; }
     .total-amount sup { font-size: 1rem; font-weight: 600; margin-right: 3px; vertical-align: super; }
 
-    /* 모달 */
+    /* ── 세금 패널 ── */
+    .tax-section-label {
+      max-width: 980px; margin: 18px auto 10px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .tax-section-label .tsl-line { flex: 1; height: 1px; background: var(--border); }
+    .tax-section-label .tsl-text {
+      font-size: 0.73rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--muted); white-space: nowrap;
+    }
+
+    .tax-panel { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .tax-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; }
+    .tax-card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+    .tax-badge { font-size: 0.69rem; font-weight: 700; padding: 3px 9px; border-radius: 5px; white-space: nowrap; letter-spacing: 0.02em; }
+    .tax-badge.freelance { background: rgba(90,82,224,0.12); color: var(--accent-light); }
+    .tax-badge.insured   { background: rgba(23,158,104,0.12); color: var(--green); }
+    .tax-card-title { font-size: 0.83rem; color: var(--text); font-weight: 600; }
+    .tax-card-sub   { font-size: 0.75rem; color: var(--muted); margin-top: 1px; }
+
+    .tax-net-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    .tax-net-label { font-size: 0.78rem; color: var(--muted); }
+    .tax-net-amount { font-size: 1.55rem; font-weight: 700; letter-spacing: -0.5px; }
+    .tax-net-amount.freelance { color: var(--accent-light); }
+    .tax-net-amount.insured   { color: var(--green); }
+    .tax-net-amount sup { font-size: 0.85rem; font-weight: 600; margin-right: 2px; vertical-align: super; }
+
+    .tax-rows { display: flex; flex-direction: column; gap: 5px; }
+    .tax-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; }
+    .tax-row .t-label { color: var(--muted); }
+    .tax-row .t-val   { font-weight: 600; color: var(--text); }
+    .tax-row .t-val.minus { color: var(--danger); }
+    .tax-row .t-val.base  { color: var(--muted); font-weight: 400; }
+    .tax-divider { border: none; border-top: 1px dashed var(--border); margin: 5px 0; }
+
+    .tax-tooltip {
+      max-width: 980px; margin: 10px auto 0;
+      background: rgba(108,99,255,0.05); border: 1px solid rgba(108,99,255,0.15);
+      border-radius: 8px; padding: 10px 16px;
+      font-size: 0.76rem; color: var(--muted); line-height: 1.7;
+    }
+    .tax-tooltip strong { color: var(--text); }
+
+    @media (max-width: 520px) {
+      .tax-panel { grid-template-columns: 1fr; }
+    }
+
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000; align-items: center; justify-content: center; }
     .modal-overlay.show { display: flex; }
     .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px 32px; max-width: 340px; width: 90%; text-align: center; }
@@ -171,7 +204,6 @@
     .modal-btns .btn-confirm { background: rgba(224,62,62,0.1); color: var(--danger); border-color: rgba(224,62,62,0.25); }
     .modal-btns .btn-confirm:hover { background: rgba(224,62,62,0.2); }
 
-    /* 모바일 */
     .mobile-list { display: none; max-width: 980px; margin: 0 auto; }
     .mobile-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 10px; }
     .mobile-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
@@ -212,7 +244,6 @@
   <p>단가를 설정하고 직원별 교육 유형과 날짜를 입력하세요</p>
 </header>
 
-<!-- 월 선택기 -->
 <div class="month-bar">
   <div class="month-nav">
     <button class="month-nav-btn" onclick="changeMonth(-1)">‹</button>
@@ -222,14 +253,12 @@
   <div class="month-saved-list" id="monthChips"></div>
 </div>
 
-<!-- 툴바 -->
 <div class="toolbar">
   <button class="btn-tool save"  onclick="saveData()">💾 저장</button>
   <button class="btn-tool excel" onclick="exportExcel()">📊 엑셀 내보내기</button>
   <button class="btn-tool reset" onclick="openResetModal()">🗑 초기화</button>
 </div>
 
-<!-- 단가 패널 -->
 <div class="rate-panel">
   <div class="panel-title">단가 설정</div>
   <div class="rate-group">
@@ -258,7 +287,6 @@
   </div>
 </div>
 
-<!-- PC 테이블 -->
 <div class="card">
   <table>
     <thead>
@@ -278,17 +306,109 @@
   </div>
 </div>
 
-<!-- 모바일 카드 리스트 -->
 <div class="mobile-list" id="mobileList"></div>
 <button class="mobile-add-btn" id="mobileAddBtn" style="display:none;max-width:980px;margin:0 auto;" onclick="addRow()">＋ 아이 추가</button>
 
-<!-- 합계 -->
 <div class="summary">
   <div class="summary-left">
     <div class="label">총 합계</div>
     <div class="sub">아이 <span id="empCount">0</span>명 · 플타 <span id="otCount">0</span>명 · 주말 <span id="wkCount">0</span>명 · 총 교육 <span id="eduTotal">0</span>회</div>
   </div>
   <div class="total-amount"><sup>₩</sup><span id="totalDisplay">0</span></div>
+</div>
+
+<!-- 세금 섹션 구분선 -->
+<div class="tax-section-label">
+  <div class="tsl-line"></div>
+  <div class="tsl-text">💡 세금 시뮬레이션 (2026년 기준)</div>
+  <div class="tsl-line"></div>
+</div>
+
+<!-- 세금 패널 -->
+<div class="tax-panel">
+
+  <!-- 프리랜서 카드 -->
+  <div class="tax-card">
+    <div class="tax-card-header">
+      <span class="tax-badge freelance">프리랜서</span>
+      <div>
+        <div class="tax-card-title">3.3% 원천징수</div>
+        <div class="tax-card-sub">소득세 3% + 지방소득세 0.3%</div>
+      </div>
+    </div>
+    <div class="tax-net-row">
+      <span class="tax-net-label">실수령액 (예상)</span>
+      <span class="tax-net-amount freelance"><sup>₩</sup><span id="fl-net">0</span></span>
+    </div>
+    <div class="tax-rows">
+      <div class="tax-row">
+        <span class="t-label">총 지급액</span>
+        <span class="t-val base" id="fl-gross">₩0</span>
+      </div>
+      <div class="tax-row">
+        <span class="t-label">소득세 (3%)</span>
+        <span class="t-val minus" id="fl-income">-₩0</span>
+      </div>
+      <div class="tax-row">
+        <span class="t-label">지방소득세 (0.3%)</span>
+        <span class="t-val minus" id="fl-local">-₩0</span>
+      </div>
+      <hr class="tax-divider"/>
+      <div class="tax-row">
+        <span class="t-label">원천징수 합계</span>
+        <span class="t-val minus" id="fl-total-tax">-₩0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4대보험 카드 -->
+  <div class="tax-card">
+    <div class="tax-card-header">
+      <span class="tax-badge insured">4대보험</span>
+      <div>
+        <div class="tax-card-title">직원 부담분 공제</div>
+        <div class="tax-card-sub">국민연금·건강·고용·요양보험</div>
+      </div>
+    </div>
+    <div class="tax-net-row">
+      <span class="tax-net-label">실수령액 (예상)</span>
+      <span class="tax-net-amount insured"><sup>₩</sup><span id="ins-net">0</span></span>
+    </div>
+    <div class="tax-rows">
+      <div class="tax-row">
+        <span class="t-label">총 지급액</span>
+        <span class="t-val base" id="ins-gross">₩0</span>
+      </div>
+      <div class="tax-row">
+        <span class="t-label">국민연금 (4.5%)</span>
+        <span class="t-val minus" id="ins-pension">-₩0</span>
+      </div>
+      <div class="tax-row">
+        <span class="t-label">건강보험 (3.545%)</span>
+        <span class="t-val minus" id="ins-health">-₩0</span>
+      </div>
+      <div class="tax-row">
+        <span class="t-label">장기요양보험 (0.4591%)</span>
+        <span class="t-val minus" id="ins-ltc">-₩0</span>
+      </div>
+      <div class="tax-row">
+        <span class="t-label">고용보험 (0.9%)</span>
+        <span class="t-val minus" id="ins-emp">-₩0</span>
+      </div>
+      <hr class="tax-divider"/>
+      <div class="tax-row">
+        <span class="t-label">4대보험 합계</span>
+        <span class="t-val minus" id="ins-total">-₩0</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 안내 문구 -->
+<div class="tax-tooltip">
+  <strong>📌 참고사항</strong> · 프리랜서(3.3%)는 사업소득 원천징수율이며, 연말정산 또는 종합소득세 신고 시 환급될 수 있습니다.
+  · 4대보험 요율은 <strong>2026년 기준 직원 부담분</strong>으로, 실제 월 보수액·취득일·소득월액에 따라 달라질 수 있습니다.
+  · 소득세(근로소득세)는 별도이며 간이세액표 적용 시 추가 공제됩니다.
 </div>
 
 <!-- 달력 팝업 -->
@@ -334,12 +454,10 @@
   let rateBasic = 0, rateOT = 0, rateWeekend = 0;
   let rows = [], idCounter = 0;
 
-  // 현재 연/월
   const _now = new Date();
   let curYear  = _now.getFullYear();
   let curMonth = _now.getMonth() + 1;
 
-  // type: 'basic' | 'ot' | 'weekend'
   function getRate(type) {
     if (type === 'ot') return rateOT;
     if (type === 'weekend') return rateWeekend;
@@ -586,9 +704,7 @@
       </div>`;
   }
 
-  // ══════════════════════════════════════
-  // 팝업 달력
-  // ══════════════════════════════════════
+  // ── 달력 팝업 ──
   let calActiveId = null, calYear = 0, calMonth = 0;
   let calSelected = new Set();
 
@@ -648,7 +764,7 @@
       const blank = document.createElement('div'); blank.className = 'cal-day empty'; grid.appendChild(blank);
     }
     for (let d = 1; d <= daysInMonth; d++) {
-      const dow = new Date(calYear, calMonth, d).getDay(); // 0=일, 6=토
+      const dow = new Date(calYear, calMonth, d).getDay();
       const btn = document.createElement('button');
       let cls = 'cal-day';
       if (calSelected.has(d)) cls += ' selected';
@@ -699,30 +815,18 @@
     });
   }
 
-  // ── 유형 세그먼트 전환 ──
   function setType(id, type) {
     const row = rows.find(r=>r.id===id); if(!row) return;
     row.type = type;
-    // PC 탭
-    const pcSeg = document.getElementById('seg-'+id);
-    if (pcSeg) {
-      pcSeg.querySelectorAll('.seg-btn').forEach((btn,i) => {
+    ['seg-'+id,'mseg-'+id].forEach(segId => {
+      const seg = document.getElementById(segId); if(!seg) return;
+      seg.querySelectorAll('.seg-btn').forEach((btn,i) => {
         btn.className = 'seg-btn';
         if (i===0 && type==='basic')   btn.classList.add('active-basic');
         if (i===1 && type==='ot')      btn.classList.add('active-ot');
         if (i===2 && type==='weekend') btn.classList.add('active-weekend');
       });
-    }
-    // 모바일 탭
-    const mbSeg = document.getElementById('mseg-'+id);
-    if (mbSeg) {
-      mbSeg.querySelectorAll('.seg-btn').forEach((btn,i) => {
-        btn.className = 'seg-btn';
-        if (i===0 && type==='basic')   btn.classList.add('active-basic');
-        if (i===1 && type==='ot')      btn.classList.add('active-ot');
-        if (i===2 && type==='weekend') btn.classList.add('active-weekend');
-      });
-    }
+    });
     updateRateCell(id);
     updateResultCell(id);
     calcTotal();
@@ -786,6 +890,52 @@
   function countEdu(str) { return getSelectedDays(str).size; }
   function calcRow(row)  { return countEdu(row.eduDates) * getRate(row.type); }
 
+  // ══════════════════════════════════════
+  // 세금 계산 (2026년 기준)
+  // ══════════════════════════════════════
+  // 프리랜서: 소득세 3% + 지방소득세 0.3% = 3.3%
+  // 4대보험 직원 부담분:
+  //   국민연금 4.5%
+  //   건강보험 3.545%
+  //   장기요양보험 건강보험료 × 12.95% ≈ 보수월액 × 0.4591%
+  //   고용보험 0.9%
+
+  function calcTax(gross) {
+    // 프리랜서
+    const fl_income = Math.round(gross * 0.03);
+    const fl_local  = Math.round(gross * 0.003);
+    const fl_total  = fl_income + fl_local;
+    const fl_net    = gross - fl_total;
+
+    // 4대보험
+    const ins_pension = Math.round(gross * 0.045);
+    const ins_health  = Math.round(gross * 0.03545);
+    const ins_ltc     = Math.round(gross * 0.004591);  // 0.4591%
+    const ins_emp     = Math.round(gross * 0.009);
+    const ins_total   = ins_pension + ins_health + ins_ltc + ins_emp;
+    const ins_net     = gross - ins_total;
+
+    return { fl_income, fl_local, fl_total, fl_net, ins_pension, ins_health, ins_ltc, ins_emp, ins_total, ins_net };
+  }
+
+  function renderTax(gross) {
+    const t = calcTax(gross);
+    // 프리랜서
+    document.getElementById('fl-net').textContent    = fmt(t.fl_net);
+    document.getElementById('fl-gross').textContent  = '₩' + fmt(gross);
+    document.getElementById('fl-income').textContent = '-₩' + fmt(t.fl_income);
+    document.getElementById('fl-local').textContent  = '-₩' + fmt(t.fl_local);
+    document.getElementById('fl-total-tax').textContent = '-₩' + fmt(t.fl_total);
+    // 4대보험
+    document.getElementById('ins-net').textContent     = fmt(t.ins_net);
+    document.getElementById('ins-gross').textContent   = '₩' + fmt(gross);
+    document.getElementById('ins-pension').textContent = '-₩' + fmt(t.ins_pension);
+    document.getElementById('ins-health').textContent  = '-₩' + fmt(t.ins_health);
+    document.getElementById('ins-ltc').textContent     = '-₩' + fmt(t.ins_ltc);
+    document.getElementById('ins-emp').textContent     = '-₩' + fmt(t.ins_emp);
+    document.getElementById('ins-total').textContent   = '-₩' + fmt(t.ins_total);
+  }
+
   function calcTotal() {
     const total = rows.reduce((s,r)=>s+calcRow(r), 0);
     document.getElementById('totalDisplay').textContent = fmt(total);
@@ -794,6 +944,7 @@
     document.getElementById('otCount').textContent  = rows.filter(r=>r.type==='ot').length;
     document.getElementById('wkCount').textContent  = rows.filter(r=>r.type==='weekend').length;
     document.getElementById('eduTotal').textContent = rows.reduce((s,r)=>s+countEdu(r.eduDates),0);
+    renderTax(total);
   }
 
   function fmt(n) { return (n||0).toLocaleString('ko-KR'); }

@@ -278,7 +278,7 @@
     </div>
   </div>
   <div class="rate-group">
-    <div class="rate-label"><span class="rate-badge weekend">주말</span></div>
+    <div class="rate-label"><span class="rate-badge weekend">주말/바우처</span></div>
     <div class="rate-input-wrap">
       <span>₩</span>
       <input class="rate-input" id="rateWeekend" type="text" inputmode="numeric" placeholder="0" oninput="onRateInput('weekend', this.value)" />
@@ -312,7 +312,7 @@
 <div class="summary">
   <div class="summary-left">
     <div class="label">총 합계</div>
-    <div class="sub">아이 <span id="empCount">0</span>명 · 플타 <span id="otCount">0</span>명 · 주말 <span id="wkCount">0</span>명 · 총 교육 <span id="eduTotal">0</span>회</div>
+    <div class="sub">아이 <span id="empCount">0</span>명 · 플타 <span id="otCount">0</span>명 · 주말/바우처 <span id="wkCount">0</span>명 · 총 교육 <span id="eduTotal">0</span>회</div>
   </div>
   <div class="total-amount"><sup>₩</sup><span id="totalDisplay">0</span></div>
 </div>
@@ -566,12 +566,12 @@
     const ym = monthLabel(curYear, curMonth);
     const validRows = rows.filter(r => r.name && r.name.trim() !== '');
     let csv = '\uFEFF';
-    csv += `월급 계산서 (${ym})\n\n기본 단가,${rateBasic}원\n플타 단가,${rateOT}원\n주말 단가,${rateWeekend}원\n\n`;
+    csv += `월급 계산서 (${ym})\n\n기본 단가,${rateBasic}원\n플타 단가,${rateOT}원\n주말/바우처 단가,${rateWeekend}원\n\n`;
     csv += `이름,유형,교육날짜,교육횟수,적용단가,최종금액\n`;
     validRows.forEach(r => {
       const count = countEdu(r.eduDates);
       const rate  = getRate(r.type);
-      const typeLabel = r.type==='ot'?'플타':r.type==='weekend'?'주말':'기본';
+      const typeLabel = r.type==='ot'?'플타':r.type==='weekend'?'주말/바우처':'기본';
       const datesCell = r.eduDates ? `"${r.eduDates}"` : '–';
       csv += `${r.name},${typeLabel},${datesCell},${count}회,${rate}원,${count*rate}원\n`;
     });
@@ -637,7 +637,7 @@
       <div class="seg-wrap" id="${prefix}seg-${id}">
         <button class="seg-btn${b}" onclick="setType(${id},'basic')">기본</button>
         <button class="seg-btn${o}" onclick="setType(${id},'ot')">플타</button>
-        <button class="seg-btn${w}" onclick="setType(${id},'weekend')">주말</button>
+        <button class="seg-btn${w}" onclick="setType(${id},'weekend')">주말/바우처</button>
       </div>`;
   }
 

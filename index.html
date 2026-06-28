@@ -22,6 +22,27 @@
     header h1 span { color: var(--accent-light); }
     header p { color: var(--muted); margin-top: 6px; font-size: 0.92rem; }
 
+    /* ── 센터 탭 바 ── */
+    .center-bar { max-width: 980px; margin: 0 auto 14px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .center-tab { display: flex; align-items: center; gap: 4px; padding: 7px 14px; border-radius: 9px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.15s; white-space: nowrap; font-family: inherit; }
+    .center-tab:hover { border-color: var(--accent-light); color: var(--accent-light); background: rgba(108,99,255,0.05); }
+    .center-tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .center-tab .center-tab-del { background: none; border: none; color: inherit; font-size: 0.8rem; opacity: 0.6; cursor: pointer; padding: 0 0 0 4px; line-height: 1; transition: opacity 0.15s; }
+    .center-tab .center-tab-del:hover { opacity: 1; }
+    .center-add-btn { display: flex; align-items: center; gap: 5px; padding: 7px 13px; border-radius: 9px; border: 1px dashed var(--border); background: transparent; color: var(--muted); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.15s; font-family: inherit; white-space: nowrap; }
+    .center-add-btn:hover { border-color: var(--accent-light); color: var(--accent-light); background: rgba(108,99,255,0.05); }
+    /* 센터 이름 편집 모달 */
+    .center-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 3000; align-items: center; justify-content: center; }
+    .center-modal-overlay.show { display: flex; }
+    .center-modal { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px 28px 24px; max-width: 320px; width: 90%; }
+    .center-modal h3 { font-size: 1rem; font-weight: 700; margin-bottom: 14px; }
+    .center-modal-input { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; font-family: inherit; font-size: 0.95rem; color: var(--text); outline: none; transition: border-color 0.2s; }
+    .center-modal-input:focus { border-color: var(--accent-light); }
+    .center-modal-btns { display: flex; gap: 10px; margin-top: 18px; }
+    .center-modal-btns button { flex: 1; padding: 10px; border-radius: 8px; font-family: inherit; font-size: 0.88rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border); transition: all 0.15s; }
+    .center-modal-btns .btn-cancel { background: var(--surface2); color: var(--muted); }
+    .center-modal-btns .btn-confirm { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .center-modal-btns .btn-confirm:hover { background: var(--accent-light); }
     .month-bar { max-width: 980px; margin: 0 auto 12px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .month-nav { display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: 9px; padding: 6px 10px; }
     .month-nav-btn { background: none; border: none; font-size: 1rem; cursor: pointer; color: var(--muted); padding: 0 4px; line-height: 1; transition: color 0.15s; }
@@ -244,6 +265,9 @@
   <p>단가를 설정하고 직원별 교육 유형과 날짜를 입력하세요</p>
 </header>
 
+<!-- 센터 탭 바 -->
+<div class="center-bar" id="centerBar"></div>
+
 <div class="month-bar">
   <div class="month-nav">
     <button class="month-nav-btn" onclick="changeMonth(-1)">‹</button>
@@ -411,6 +435,18 @@
   · 소득세(근로소득세)는 별도이며 간이세액표 적용 시 추가 공제됩니다.
 </div>
 
+<!-- 센터 이름 편집 모달 -->
+<div class="center-modal-overlay" id="centerModalOverlay">
+  <div class="center-modal">
+    <h3 id="centerModalTitle">센터 추가</h3>
+    <input class="center-modal-input" id="centerModalInput" type="text" placeholder="센터 이름 입력" maxlength="20" />
+    <div class="center-modal-btns">
+      <button class="btn-cancel" onclick="closeCenterModal()">취소</button>
+      <button class="btn-confirm" id="centerModalConfirm" onclick="confirmCenterModal()">확인</button>
+    </div>
+  </div>
+</div>
+
 <!-- 달력 팝업 -->
 <div class="cal-popup-overlay" id="calPopupOverlay" onclick="calOverlayClick(event)">
   <div class="cal-popup">
@@ -449,8 +485,171 @@
   </div>
 </div>
 
+<!-- 센터 삭제 확인 모달 -->
+<div class="modal-overlay" id="centerDeleteModal">
+  <div class="modal">
+    <h3>⚠️ 센터 삭제</h3>
+    <p><strong id="centerDeleteName"></strong> 센터의<br>모든 데이터가 삭제됩니다.<br>계속하시겠습니까?</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeCenterDeleteModal()">취소</button>
+      <button class="btn-confirm" onclick="confirmCenterDelete()">삭제</button>
+    </div>
+  </div>
+</div>
+
 <script>
-  const STORAGE_PREFIX = 'slp_salary_';
+  // ══════════════════════════════════════
+  // 센터 관리
+  // ══════════════════════════════════════
+  const CENTERS_KEY = 'slp_centers';
+  let centers = [];       // [{id, name}, ...]
+  let curCenterId = null;
+  let _centerModalMode = 'add'; // 'add' | 'rename'
+
+  function loadCenters() {
+    try { centers = JSON.parse(localStorage.getItem(CENTERS_KEY)) || []; } catch(e) { centers = []; }
+    if (centers.length === 0) {
+      centers = [{ id: 'c1', name: 'A센터' }];
+      saveCenters();
+    }
+    if (!curCenterId || !centers.find(c=>c.id===curCenterId)) {
+      curCenterId = centers[0].id;
+    }
+  }
+
+  function saveCenters() {
+    localStorage.setItem(CENTERS_KEY, JSON.stringify(centers));
+  }
+
+  function renderCenterBar() {
+    const bar = document.getElementById('centerBar');
+    bar.innerHTML = '';
+    centers.forEach(c => {
+      const wrap = document.createElement('div');
+      wrap.style.cssText = 'display:flex;align-items:center;gap:0;';
+
+      const btn = document.createElement('button');
+      btn.className = 'center-tab' + (c.id === curCenterId ? ' active' : '');
+      btn.style.borderRadius = centers.length > 1 ? '9px 0 0 9px' : '9px';
+      btn.style.borderRight = centers.length > 1 ? 'none' : '';
+      const nameSpan = document.createElement('span');
+      nameSpan.textContent = c.name;
+      nameSpan.title = '더블클릭으로 이름 변경';
+      nameSpan.ondblclick = (e) => { e.stopPropagation(); openRenameCenterModal(c.id); };
+      btn.appendChild(nameSpan);
+      btn.onclick = () => switchCenter(c.id);
+      wrap.appendChild(btn);
+
+      if (centers.length > 1) {
+        const del = document.createElement('button');
+        del.className = 'center-tab' + (c.id === curCenterId ? ' active' : '');
+        del.style.cssText = 'border-radius:0 9px 9px 0;padding:7px 9px;border-left:1px solid rgba(255,255,255,0.25);';
+        del.title = '센터 삭제';
+        del.textContent = '✕';
+        del.onclick = (e) => deleteCenter(e, c.id);
+        wrap.appendChild(del);
+      }
+
+      bar.appendChild(wrap);
+    });
+    const addBtn = document.createElement('button');
+    addBtn.className = 'center-add-btn';
+    addBtn.textContent = '+ 센터 추가';
+    addBtn.onclick = openAddCenterModal;
+    bar.appendChild(addBtn);
+  }
+
+  function switchCenter(id) {
+    curCenterId = id;
+    renderCenterBar();
+    loadMonth();
+  }
+
+  function openAddCenterModal() {
+    _centerModalMode = 'add';
+    document.getElementById('centerModalTitle').textContent = '센터 추가';
+    document.getElementById('centerModalInput').value = '';
+    document.getElementById('centerModalOverlay').classList.add('show');
+    setTimeout(() => document.getElementById('centerModalInput').focus(), 50);
+  }
+
+  function openRenameCenterModal(id) {
+    _centerModalMode = id;
+    const c = centers.find(c=>c.id===id);
+    document.getElementById('centerModalTitle').textContent = '센터 이름 변경';
+    document.getElementById('centerModalInput').value = c ? c.name : '';
+    document.getElementById('centerModalOverlay').classList.add('show');
+    setTimeout(() => { const inp = document.getElementById('centerModalInput'); inp.focus(); inp.select(); }, 50);
+  }
+
+  function closeCenterModal() {
+    document.getElementById('centerModalOverlay').classList.remove('show');
+  }
+
+  function confirmCenterModal() {
+    const name = document.getElementById('centerModalInput').value.trim();
+    if (!name) return;
+    if (_centerModalMode === 'add') {
+      const id = 'c' + Date.now();
+      centers.push({ id, name });
+      saveCenters();
+      curCenterId = id;
+      renderCenterBar();
+      loadMonth();
+    } else {
+      const c = centers.find(c=>c.id===_centerModalMode);
+      if (c) { c.name = name; saveCenters(); renderCenterBar(); }
+    }
+    closeCenterModal();
+  }
+
+  document.getElementById('centerModalInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') confirmCenterModal();
+    if (e.key === 'Escape') closeCenterModal();
+  });
+  document.getElementById('centerModalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeCenterModal();
+  });
+
+  let _deletingCenterId = null;
+  function deleteCenter(e, id) {
+    e.stopPropagation();
+    if (centers.length <= 1) { showToast('⚠️ 센터는 최소 1개 필요합니다'); return; }
+    const c = centers.find(c=>c.id===id);
+    _deletingCenterId = id;
+    document.getElementById('resetModal').classList.remove('show');
+    document.getElementById('centerDeleteModal').classList.add('show');
+    document.getElementById('centerDeleteName').textContent = c ? c.name : '';
+  }
+  function closeCenterDeleteModal() {
+    document.getElementById('centerDeleteModal').classList.remove('show');
+    _deletingCenterId = null;
+  }
+  function confirmCenterDelete() {
+    const id = _deletingCenterId;
+    closeCenterDeleteModal();
+    if (!id) return;
+    const prefix = centerPrefix(id);
+    const keysToRemove = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith(prefix)) keysToRemove.push(k);
+    }
+    keysToRemove.forEach(k => localStorage.removeItem(k));
+    centers = centers.filter(c=>c.id!==id);
+    saveCenters();
+    if (curCenterId === id) curCenterId = centers[0].id;
+    renderCenterBar();
+    loadMonth();
+    showToast('🗑 센터가 삭제되었습니다');
+  }
+
+  // ══════════════════════════════════════
+  // 스토리지 키 (센터별)
+  // ══════════════════════════════════════
+  function centerPrefix(cid) { return `slp_salary_${cid}_`; }
+  function curPrefix()       { return centerPrefix(curCenterId); }
+
   let rateBasic = 0, rateOT = 0, rateWeekend = 0;
   let rows = [], idCounter = 0;
 
@@ -464,7 +663,7 @@
     return rateBasic;
   }
 
-  function monthKey(y, m) { return `${STORAGE_PREFIX}${y}_${String(m).padStart(2,'0')}`; }
+  function monthKey(y, m) { return `${curPrefix()}${y}_${String(m).padStart(2,'0')}`; }
   function curKey()        { return monthKey(curYear, curMonth); }
   function monthLabel(y, m){ return `${y}년 ${m}월`; }
 
@@ -473,8 +672,8 @@
     const chips = [];
     for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i);
-      if (k && k.startsWith(STORAGE_PREFIX)) {
-        const part = k.replace(STORAGE_PREFIX,'');
+      if (k && k.startsWith(curPrefix())) {
+        const part = k.replace(curPrefix(),'');
         const [y, m] = part.split('_').map(Number);
         if (y && m) chips.push({y, m});
       }
@@ -534,7 +733,7 @@
     renderMonthBar();
   }
 
-  (function init() { loadMonth(); })();
+  (function init() { loadCenters(); renderCenterBar(); loadMonth(); })();
 
   function saveData() {
     localStorage.setItem(curKey(), JSON.stringify({
@@ -542,7 +741,7 @@
       rows: rows.map(r => ({ name: r.name, type: r.type, eduDates: r.eduDates }))
     }));
     renderMonthBar();
-    showToast(`✅ ${monthLabel(curYear,curMonth)} 저장 완료`);
+    const cname = (centers.find(c=>c.id===curCenterId)||{}).name||''; showToast(`✅ [${cname}] ${monthLabel(curYear,curMonth)} 저장 완료`);
   }
 
   function openResetModal()  { document.getElementById('resetModal').classList.add('show'); }

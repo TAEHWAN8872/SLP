@@ -137,8 +137,8 @@
     .btn-add { background: none; border: 1px dashed var(--border); color: var(--muted); cursor: pointer; font-family: inherit; font-size: 0.88rem; padding: 7px 14px; border-radius: 6px; transition: all 0.15s; display: flex; align-items: center; gap: 6px; }
     .btn-add:hover { border-color: var(--accent); color: var(--accent-light); background: rgba(108,99,255,0.05); }
 
-    .summary { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); max-width: 980px; margin: 16px auto 0; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-    .summary-left .label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; }
+    .summary { background: linear-gradient(135deg, rgba(23,158,104,0.08) 0%, rgba(23,158,104,0.04) 100%); border: 1px solid rgba(23,158,104,0.25); border-radius: var(--radius); max-width: 980px; margin: 16px auto 0; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .summary-left .label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green); font-weight: 600; opacity: 0.7; }
     .summary-left .sub { font-size: 0.88rem; color: var(--muted); margin-top: 4px; }
     .summary-left .sub span { color: var(--text); font-weight: 600; }
     .total-amount { font-size: 2rem; font-weight: 700; color: var(--green); letter-spacing: -1px; }
@@ -262,7 +262,7 @@
 <div class="rate-panel">
   <div class="panel-title">단가 설정</div>
   <div class="rate-group">
-    <div class="rate-label"><span class="rate-badge basic">기본</span>기본 단가</div>
+    <div class="rate-label"><span class="rate-badge basic">기본</span></div>
     <div class="rate-input-wrap">
       <span>₩</span>
       <input class="rate-input" id="rateBasic" type="text" inputmode="numeric" placeholder="0" oninput="onRateInput('basic', this.value)" />
@@ -270,7 +270,7 @@
     </div>
   </div>
   <div class="rate-group">
-    <div class="rate-label"><span class="rate-badge ot">플타</span>플타 단가</div>
+    <div class="rate-label"><span class="rate-badge ot">플타</span></div>
     <div class="rate-input-wrap">
       <span>₩</span>
       <input class="rate-input" id="rateOT" type="text" inputmode="numeric" placeholder="0" oninput="onRateInput('ot', this.value)" />
@@ -278,7 +278,7 @@
     </div>
   </div>
   <div class="rate-group">
-    <div class="rate-label"><span class="rate-badge weekend">주말</span>주말 단가</div>
+    <div class="rate-label"><span class="rate-badge weekend">주말</span></div>
     <div class="rate-input-wrap">
       <span>₩</span>
       <input class="rate-input" id="rateWeekend" type="text" inputmode="numeric" placeholder="0" oninput="onRateInput('weekend', this.value)" />

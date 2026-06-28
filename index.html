@@ -268,6 +268,10 @@
     .login-field label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
     .login-field input { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 11px 14px; font-family: inherit; font-size: 0.95rem; color: var(--text); outline: none; transition: border-color 0.2s; }
     .login-field input:focus { border-color: var(--accent-light); }
+    .pw-wrap { position: relative; }
+    .pw-wrap input { padding-right: 42px; }
+    .pw-toggle { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--muted); font-size: 1.1rem; padding: 2px; line-height: 1; transition: color 0.15s; }
+    .pw-toggle:hover { color: var(--accent-light); }
     .login-btn { width: 100%; background: var(--accent); border: none; color: #fff; font-family: inherit; font-size: 0.95rem; font-weight: 700; padding: 12px; border-radius: 8px; cursor: pointer; margin-top: 8px; transition: background 0.15s; }
     .login-btn:hover { background: var(--accent-light); }
     .login-error { color: var(--danger); font-size: 0.82rem; text-align: center; margin-top: 10px; min-height: 18px; }
@@ -290,7 +294,10 @@
     </div>
     <div class="login-field">
       <label>비밀번호</label>
-      <input type="password" id="loginPw" placeholder="비밀번호 입력" autocomplete="current-password" />
+      <div class="pw-wrap">
+        <input type="password" id="loginPw" placeholder="비밀번호 입력" autocomplete="current-password" />
+        <button type="button" class="pw-toggle" onclick="togglePw()" id="pwToggle" title="비밀번호 표시/숨기기">👁</button>
+      </div>
     </div>
     <button class="login-btn" onclick="doLogin()">로그인</button>
     <div class="login-error" id="loginError"></div>
@@ -578,6 +585,18 @@
       errEl.textContent = '아이디 또는 비밀번호가 올바르지 않습니다.';
       document.getElementById('loginPw').value = '';
       document.getElementById('loginPw').focus();
+    }
+  }
+
+  function togglePw() {
+    const input = document.getElementById('loginPw');
+    const btn = document.getElementById('pwToggle');
+    if (input.type === 'password') {
+      input.type = 'text';
+      btn.textContent = '🙈';
+    } else {
+      input.type = 'password';
+      btn.textContent = '👁';
     }
   }
 

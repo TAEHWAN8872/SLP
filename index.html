@@ -541,25 +541,30 @@
 
 <script>
   // ══════════════════════════════════════
-  // 계정 목록 (아이디: 비밀번호)
+  // 계정 목록 (아이디: SHA-256 해시값)
   // 계정 추가/삭제는 여기서만 수정하면 됩니다
   // ══════════════════════════════════════
   const ACCOUNTS = {
-    'admin':  'admin1234',   // 관리자
-    '7047qkr': 'wjd95320!!', // 1번 사람
-    '1235':   '4567',        // 2번 사람
-    // 추가할 때: '아이디': '비밀번호',
+    'admin':   '8b4e8274fd17ce1f4d74f566599df4f61a0d98a6d5b9218004a6c6bc05b61036', // 관리자
+    '7047qkr': '879e18542053585a9d94a7fd3d0f36a28393f8c3dd4d21d2b41d28464a3b8fbd', // 1번 사람
+    // 추가할 때: '아이디': 'SHA-256 해시값',
   };
+
+  async function hashPassword(pw) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  }
 
   const SESSION_KEY = 'slp_session';
   let currentUser = null;
 
-  function doLogin() {
+  async function doLogin() {
     const id = document.getElementById('loginId').value.trim();
     const pw = document.getElementById('loginPw').value;
     const errEl = document.getElementById('loginError');
     if (!id || !pw) { errEl.textContent = '아이디와 비밀번호를 입력하세요.'; return; }
-    if (ACCOUNTS[id] && ACCOUNTS[id] === pw) {
+    const hashed = await hashPassword(pw);
+    if (ACCOUNTS[id] && ACCOUNTS[id] === hashed) {
       currentUser = id;
       sessionStorage.setItem(SESSION_KEY, id);
       document.getElementById('loginScreen').classList.remove('show');

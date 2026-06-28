@@ -256,9 +256,47 @@
       .toolbar { justify-content: stretch; }
       .btn-tool { flex: 1; justify-content: center; font-size: 0.8rem; padding: 8px 10px; }
     }
+
+    /* ── 로그인 화면 ── */
+    .login-screen { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 9999; align-items: center; justify-content: center; }
+    .login-screen.show { display: flex; }
+    .login-box { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 40px 36px 32px; width: min(380px, 92vw); box-shadow: 0 12px 40px rgba(0,0,0,0.10); }
+    .login-logo { text-align: center; font-size: 1.8rem; font-weight: 700; margin-bottom: 6px; }
+    .login-logo span { color: var(--accent-light); }
+    .login-sub { text-align: center; font-size: 0.85rem; color: var(--muted); margin-bottom: 28px; }
+    .login-field { margin-bottom: 14px; }
+    .login-field label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .login-field input { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 11px 14px; font-family: inherit; font-size: 0.95rem; color: var(--text); outline: none; transition: border-color 0.2s; }
+    .login-field input:focus { border-color: var(--accent-light); }
+    .login-btn { width: 100%; background: var(--accent); border: none; color: #fff; font-family: inherit; font-size: 0.95rem; font-weight: 700; padding: 12px; border-radius: 8px; cursor: pointer; margin-top: 8px; transition: background 0.15s; }
+    .login-btn:hover { background: var(--accent-light); }
+    .login-error { color: var(--danger); font-size: 0.82rem; text-align: center; margin-top: 10px; min-height: 18px; }
+    .logout-btn { background: none; border: 1px solid var(--border); color: var(--muted); font-family: inherit; font-size: 0.78rem; padding: 5px 12px; border-radius: 7px; cursor: pointer; transition: all 0.15s; }
+    .logout-btn:hover { color: var(--danger); border-color: rgba(224,62,62,0.4); }
+    .login-user-badge { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--muted); }
+    .login-user-badge strong { color: var(--text); }
   </style>
 </head>
 <body>
+
+<!-- 로그인 화면 -->
+<div class="login-screen show" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">💰 월급 <span>계산기</span></div>
+    <div class="login-sub">아이디와 비밀번호를 입력하세요</div>
+    <div class="login-field">
+      <label>아이디</label>
+      <input type="text" id="loginId" placeholder="아이디 입력" autocomplete="username" />
+    </div>
+    <div class="login-field">
+      <label>비밀번호</label>
+      <input type="password" id="loginPw" placeholder="비밀번호 입력" autocomplete="current-password" />
+    </div>
+    <button class="login-btn" onclick="doLogin()">로그인</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
 
 <header>
   <h1>💰 월급 <span>계산기</span></h1>
@@ -277,7 +315,11 @@
   <div class="month-saved-list" id="monthChips"></div>
 </div>
 
-<div class="toolbar">
+<div class="toolbar" style="align-items:center;">
+  <div class="login-user-badge">
+    <span>👤 <strong id="loggedInUser"></strong></span>
+    <button class="logout-btn" onclick="doLogout()">로그아웃</button>
+  </div>
   <button class="btn-tool save"  onclick="saveData()">💾 저장</button>
   <button class="btn-tool excel" onclick="exportExcel()">📊 엑셀 내보내기</button>
   <button class="btn-tool reset" onclick="openResetModal()">🗑 초기화</button>
@@ -499,15 +541,79 @@
 
 <script>
   // ══════════════════════════════════════
+  // 계정 목록 (아이디: 비밀번호)
+  // 계정 추가/삭제는 여기서만 수정하면 됩니다
+  // ══════════════════════════════════════
+  const ACCOUNTS = {
+    'admin':  'admin1234',   // 관리자
+    '7047qkr': 'wjd95320!!', // 1번 사람
+    '1235':   '4567',        // 2번 사람
+    // 추가할 때: '아이디': '비밀번호',
+  };
+
+  const SESSION_KEY = 'slp_session';
+  let currentUser = null;
+
+  function doLogin() {
+    const id = document.getElementById('loginId').value.trim();
+    const pw = document.getElementById('loginPw').value;
+    const errEl = document.getElementById('loginError');
+    if (!id || !pw) { errEl.textContent = '아이디와 비밀번호를 입력하세요.'; return; }
+    if (ACCOUNTS[id] && ACCOUNTS[id] === pw) {
+      currentUser = id;
+      sessionStorage.setItem(SESSION_KEY, id);
+      document.getElementById('loginScreen').classList.remove('show');
+      document.getElementById('loggedInUser').textContent = id;
+      errEl.textContent = '';
+      loadCenters();
+      renderCenterBar();
+      loadMonth();
+    } else {
+      errEl.textContent = '아이디 또는 비밀번호가 올바르지 않습니다.';
+      document.getElementById('loginPw').value = '';
+      document.getElementById('loginPw').focus();
+    }
+  }
+
+  function doLogout() {
+    sessionStorage.removeItem(SESSION_KEY);
+    currentUser = null;
+    document.getElementById('loginId').value = '';
+    document.getElementById('loginPw').value = '';
+    document.getElementById('loginError').textContent = '';
+    document.getElementById('loginScreen').classList.add('show');
+    setTimeout(() => document.getElementById('loginId').focus(), 50);
+  }
+
+  // 엔터키로 로그인
+  document.addEventListener('DOMContentLoaded', () => {
+    ['loginId','loginPw'].forEach(id => {
+      document.getElementById(id).addEventListener('keydown', e => {
+        if (e.key === 'Enter') doLogin();
+      });
+    });
+    // 세션 복원
+    const saved = sessionStorage.getItem(SESSION_KEY);
+    if (saved && ACCOUNTS[saved]) {
+      currentUser = saved;
+      document.getElementById('loggedInUser').textContent = saved;
+      document.getElementById('loginScreen').classList.remove('show');
+      loadCenters(); renderCenterBar(); loadMonth();
+    } else {
+      setTimeout(() => document.getElementById('loginId').focus(), 100);
+    }
+  });
+
+  // ══════════════════════════════════════
   // 센터 관리
   // ══════════════════════════════════════
-  const CENTERS_KEY = 'slp_centers';
+  function centersKey() { return `slp_centers_${currentUser}`; }
   let centers = [];       // [{id, name}, ...]
   let curCenterId = null;
   let _centerModalMode = 'add'; // 'add' | 'rename'
 
   function loadCenters() {
-    try { centers = JSON.parse(localStorage.getItem(CENTERS_KEY)) || []; } catch(e) { centers = []; }
+    try { centers = JSON.parse(localStorage.getItem(centersKey())) || []; } catch(e) { centers = []; }
     if (centers.length === 0) {
       centers = [{ id: 'c1', name: 'A센터' }];
       saveCenters();
@@ -518,7 +624,7 @@
   }
 
   function saveCenters() {
-    localStorage.setItem(CENTERS_KEY, JSON.stringify(centers));
+    localStorage.setItem(centersKey(), JSON.stringify(centers));
   }
 
   function renderCenterBar() {
@@ -647,7 +753,7 @@
   // ══════════════════════════════════════
   // 스토리지 키 (센터별)
   // ══════════════════════════════════════
-  function centerPrefix(cid) { return `slp_salary_${cid}_`; }
+  function centerPrefix(cid) { return `slp_${currentUser}_${cid}_`; }
   function curPrefix()       { return centerPrefix(curCenterId); }
 
   let rateBasic = 0, rateOT = 0, rateWeekend = 0;
@@ -733,7 +839,7 @@
     renderMonthBar();
   }
 
-  (function init() { loadCenters(); renderCenterBar(); loadMonth(); })();
+  // 초기화는 로그인 후 실행 (doLogin 또는 세션 복원 시)
 
   function saveData() {
     localStorage.setItem(curKey(), JSON.stringify({

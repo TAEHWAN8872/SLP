@@ -564,6 +564,14 @@
     return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
   }
 
+  const NAMES = {
+    'admin':   '관리자',
+    '7047qkr': '박수정 선생님',
+    'slpsuy':  '박수영 선생님',
+    'test':    '테스트 선생님',
+  };
+  function getDisplayName(id) { return NAMES[id] || id; }
+
   const SESSION_KEY = 'slp_session';
   let currentUser = null;
 
@@ -577,7 +585,7 @@
       currentUser = id;
       sessionStorage.setItem(SESSION_KEY, id);
       document.getElementById('loginScreen').classList.remove('show');
-      document.getElementById('loggedInUser').textContent = id;
+      document.getElementById('loggedInUser').textContent = getDisplayName(id);
       errEl.textContent = '';
       loadCenters();
       renderCenterBar();
@@ -622,7 +630,7 @@
     const saved = sessionStorage.getItem(SESSION_KEY);
     if (saved && ACCOUNTS[saved]) {
       currentUser = saved;
-      document.getElementById('loggedInUser').textContent = saved;
+      document.getElementById('loggedInUser').textContent = getDisplayName(saved);
       document.getElementById('loginScreen').classList.remove('show');
       loadCenters(); renderCenterBar(); loadMonth();
     } else {
